@@ -52,8 +52,6 @@ function mandelbrotPath(cr, ci, iterations, optimize) {
     return points;
 }
 
-function lerp(a,b,x) { return a + x * (b-a);}
-
 function sampleBuddhbrot(image, array, iterations, samples) {
     var minx = -2.0;
     var maxx = 1.0;
