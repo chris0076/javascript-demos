@@ -109,14 +109,12 @@ $(document).ready(function () {
     var points = [];
     var canvas = document.getElementById("mandelbrotpath");
     var ctx = canvas.getContext("2d");
-    ctx.font = "bold 16px Arial";
-    ctx.textalign = "center";
-    ctx.fillText("CLICK HERE", canvas.width/2, canvas.height/2);
+    var imageData = ctx.createImageData(canvas.width, canvas.height);
+    var iterations = 255
+    drawMandelbrot(imageData, iterations, 0);
+    ctx.putImageData(imageData, 0, 0);
 
-    $(canvas).click(function (e) {
-        var iterations = 255
-        var imageData = ctx.createImageData(canvas.width, canvas.height);
-        drawMandelbrot(imageData, iterations, 0)
+    $(canvas).mousemove(function (e) {
         ctx.putImageData(imageData, 0, 0);
 
         var minx = -2.0;
