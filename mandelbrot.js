@@ -20,6 +20,13 @@ function mandelbrot(cr, ci, iterations, smooth) {
         return count;
     var colorindex = 0;
     if (count < iterations) {
+        var temp = zr * zr - zi * zi + cr;
+        zi = 2 * zr * zi + ci;
+        zr = temp;
+        temp = zr * zr - zi * zi + cr;
+        zi = 2 * zr * zi + ci;
+        zr = temp;
+        count += 2;
         var mu = (Math.log(Math.log((zr*zr + zi*zi)))) / Math.log(2.0);
         colorindex = Math.floor((count - mu) * iterations / smooth);
         if (colorindex < 0) colorindex = 0;
