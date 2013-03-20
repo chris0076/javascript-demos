@@ -129,7 +129,7 @@ $(document).ready(function () {
 
         ctx.strokeStyle = "#00FF00";
         ctx.beginPath();
-        if (points) {
+        if (points.length) {
             ctx.moveTo((points[0][0]-minx)/pitchx, (points[0][1]-miny)/pitchy);
             for (var i = 1; i < points.length; i++) {
                 ctx.strokeStyle = "rgb(0," + (iterations - i) + ", 0)";
