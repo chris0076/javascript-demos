@@ -56,7 +56,7 @@ function voronoiPoints(points, x, y) {
 }
 
 
-function drawVoronoi(image, points, scale) {
+function drawVoronoi(image, points, scale, user) {
     var offset = Math.random() * 100;
 
     var data = [];
@@ -64,8 +64,11 @@ function drawVoronoi(image, points, scale) {
         min = 1e9;
     for (var j = 0; j < image.height; j++) {
         for (var i = 0; i < image.width; i++) {
-            //var temp = voronoi(i * scale + offset, j * scale + offset);
-            var temp = voronoiPoints(points, i * scale, j * scale);
+            if (user) {
+                var temp = voronoiPoints(points, i * scale, j * scale);
+            } else {
+                var temp = voronoi(i * scale + offset, j * scale + offset);
+            }
             if (temp < min) {
                 min = temp;
             }
@@ -90,6 +93,17 @@ $(document).ready(function () {
     var points = [];
     var canvas = document.getElementById("voronoi");
     var ctx = canvas.getContext("2d");
+    var imageData = ctx.createImageData(canvas.width, canvas.height);
+    var scale = 1 / 64;
+
+    drawVoronoi(imageData, points, scale);
+    ctx.putImageData(imageData, 0, 0);
+});
+
+$(document).ready(function () {
+    var points = [];
+    var canvas = document.getElementById("voronoipoints");
+    var ctx = canvas.getContext("2d");
     ctx.font = "bold 16px Arial";
     ctx.textalign = "center";
     ctx.fillText("CLICK HERE", canvas.width/2, canvas.height/2);
@@ -102,7 +116,7 @@ $(document).ready(function () {
         p.x = e.offsetX * scale;
         p.y = e.offsetY * scale;
         points.push(p);
-        drawVoronoi(imageData, points, scale);
+        drawVoronoi(imageData, points, scale, 1);
         ctx.putImageData(imageData, 0, 0);
 
         ctx.fillStyle = "#00FF00";
