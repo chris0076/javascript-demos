@@ -61,11 +61,7 @@ function drawVoronoi(image, points, scale, user) {
 
     var pixels = image.data;
     for (var i = 0; i < image.width * image.height; i++) {
-        var val = ((data[i] - min) / max) * 255 & 0xff;
-        pixels[i * 4] = val;
-        pixels[i * 4 + 1] = val;
-        pixels[i * 4 + 2] = val;
-        pixels[i * 4 + 3] = 255;
+        setPixelVal(image, i, null, ((data[i] - min) / max) * 255 & 0xff);
     }
 }
 

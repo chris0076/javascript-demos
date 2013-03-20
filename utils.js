@@ -17,3 +17,11 @@ function chebychev(dx, dy) {
 }
 
 function lerp(a,b,x) { return a + x * (b-a);}
+
+function setPixelVal(image, x, y, val) {
+    idx = image.width*y + x;
+    image.data[idx * 4] = val;
+    image.data[idx * 4 + 1] = val;
+    image.data[idx * 4 + 2] = val;
+    image.data[idx * 4 + 3] = 255;
+}

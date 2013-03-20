@@ -87,7 +87,6 @@ function sampleBuddhbrot(image, array, iterations, samples) {
 }
 
 function drawBuddhabrot(image, array) {
-    var pixels = image.data;
     var min = Infinity;
     var max = 0;
 
@@ -98,16 +97,11 @@ function drawBuddhabrot(image, array) {
 
     for (var i=0; i < array.length; i++) {
         var val = ((array[i] - min) / max) * 255;
-        pixels[i * 4] = val;
-        pixels[i * 4 + 1] = val;
-        pixels[i * 4 + 2] = val;
-        pixels[i * 4 + 3] = 255;
+        setPixelVal(image, i, null, val);
     }
 }
 
 function drawMandelbrot(image, iterations, smooth) {
-
-    var pixels = image.data;
     var minx = -2.0;
     var maxx = 1.0;
     var miny = -1.0;
@@ -119,11 +113,7 @@ function drawMandelbrot(image, iterations, smooth) {
     for (var i = 0; i < image.width; i++) {
         for (var j = 0; j < image.height; j++) {
             var val = mandelbrot(i*pitchx+minx, j*pitchy+miny, iterations, smooth) / iterations * 255;
-            var idx = image.width * j + i;
-            pixels[idx * 4] = val;
-            pixels[idx * 4 + 1] = val;
-            pixels[idx * 4 + 2] = val;
-            pixels[idx * 4 + 3] = 255;
+            setPixelVal(image, i, j, val);
         }
     }
 }
@@ -151,6 +141,7 @@ function drawMandelbrotPath(image, ctx, iterations, x, y) {
         ctx.stroke();
     }
 }
+
 
 $(document).ready(function () {
     var points = [];
