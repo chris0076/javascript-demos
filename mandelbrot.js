@@ -33,18 +33,18 @@ function mandelbrotPath(cr, ci, iterations) {
     var count = 0;
 
     points = []
-    if (mandelbrot(cr, ci, iterations, 0) != iterations) {
-        for (;count < iterations;count++) {
-            if ((zr*zr + zi*zi) <= 4.0) {
-                var temp = zr * zr - zi * zi + cr;
-                zi = 2 * zr * zi + ci;
-                zr = temp;
-                points.push([zr, zi]);
-            } else {
-                break;
-            }
+
+    for (;count < iterations;count++) {
+        if ((zr*zr + zi*zi) <= 4.0) {
+            var temp = zr * zr - zi * zi + cr;
+            zi = 2 * zr * zi + ci;
+            zr = temp;
+            points.push([zr, zi]);
+        } else {
+            break;
         }
     }
+
     return points;
 }
 
@@ -127,12 +127,15 @@ $(document).ready(function () {
         var pitchy = (maxy - miny) / canvas.height;
         points = mandelbrotPath(e.offsetX*pitchx+minx, e.offsetY*pitchy+miny, iterations);
 
-        ctx.strokeStyle = "#00FF00";
+        if (points.length == iterations) {
+            ctx.strokeStyle = "#FF0000";
+        } else {
+            ctx.strokeStyle = "#00FF00";
+        }
         ctx.beginPath();
         if (points.length) {
             ctx.moveTo((points[0][0]-minx)/pitchx, (points[0][1]-miny)/pitchy);
             for (var i = 1; i < points.length; i++) {
-                ctx.strokeStyle = "rgb(0," + (iterations - i) + ", 0)";
                 ctx.lineTo((points[i][0]-minx)/pitchx, (points[i][1]-miny)/pitchy);
             }
             ctx.stroke();
