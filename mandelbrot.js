@@ -128,6 +128,30 @@ function drawMandelbrot(image, iterations, smooth) {
     }
 }
 
+function drawMandelbrotPath(image, ctx, iterations, x, y) {
+    var minx = -2.0;
+    var maxx = 1.0;
+    var miny = -1.0;
+    var maxy = 1.0;
+    var pitchx = (maxx - minx) / image.width;
+    var pitchy = (maxy - miny) / image.height;
+    points = mandelbrotPath(x*pitchx+minx, y*pitchy+miny, iterations);
+
+    if (points.length == iterations) {
+        ctx.strokeStyle = "#FF0000";
+    } else {
+        ctx.strokeStyle = "#00FF00";
+    }
+    ctx.beginPath();
+    if (points.length) {
+        ctx.moveTo((points[0][0]-minx)/pitchx, (points[0][1]-miny)/pitchy);
+        for (var i = 1; i < points.length; i++) {
+            ctx.lineTo((points[i][0]-minx)/pitchx, (points[i][1]-miny)/pitchy);
+        }
+        ctx.stroke();
+    }
+}
+
 $(document).ready(function () {
     var points = [];
     var canvas = document.getElementById("mandelbrot");
@@ -171,30 +195,8 @@ $(document).ready(function () {
 
     $(canvas).mousemove(function (e) {
         ctx.putImageData(imageData, 0, 0);
-
-        var minx = -2.0;
-        var maxx = 1.0;
-        var miny = -1.0;
-        var maxy = 1.0;
-        var pitchx = (maxx - minx) / canvas.width;
-        var pitchy = (maxy - miny) / canvas.height;
-        points = mandelbrotPath(e.offsetX*pitchx+minx, e.offsetY*pitchy+miny, iterations);
-
-        if (points.length == iterations) {
-            ctx.strokeStyle = "#FF0000";
-        } else {
-            ctx.strokeStyle = "#00FF00";
-        }
-        ctx.beginPath();
-        if (points.length) {
-            ctx.moveTo((points[0][0]-minx)/pitchx, (points[0][1]-miny)/pitchy);
-            for (var i = 1; i < points.length; i++) {
-                ctx.lineTo((points[i][0]-minx)/pitchx, (points[i][1]-miny)/pitchy);
-            }
-            ctx.stroke();
-        }
+        drawMandelbrotPath(imageData, ctx, iterations, e.offsetX, e.offsetY);
     });
-
 });
 
 $(document).ready(function () {
