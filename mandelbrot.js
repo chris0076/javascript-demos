@@ -191,8 +191,36 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    var points = [];
-    var canvas = document.getElementById("buddhabrot");
+    function make_buddhabrot(id, iterations) {
+        var canvas = document.getElementById(id);
+        var ctx = canvas.getContext("2d");
+        var imageData = ctx.createImageData(canvas.width, canvas.height);
+
+        ctx.font = "bold 16px Arial";
+        ctx.textalign = "center";
+        ctx.fillText("CLICK HERE", 300, 200);
+
+        var array = []
+        for (var i = 0; i < canvas.width*canvas.height; i++) {array.push(0); }
+
+        $(canvas).hover(function (e) {
+            iid = setInterval(function() { sampleBuddhbrot(imageData, array, iterations, 10000);}, 0)},
+            function() { (iid && clearInterval(iid)); }
+        );
+
+        $(canvas).click(function (e) {
+            drawBuddhabrot(imageData, array);
+            ctx.putImageData(imageData, 0, 0);
+        });
+        return imageData;
+    }
+
+    bluedata = make_buddhabrot("buddhabrot_red", 50);
+    greendata = make_buddhabrot("buddhabrot_blue", 500);
+    reddata = make_buddhabrot("buddhabrot_green", 5000)
+
+
+    var canvas = document.getElementById("nebulabrot");
     var ctx = canvas.getContext("2d");
     var imageData = ctx.createImageData(canvas.width, canvas.height);
 
@@ -200,14 +228,16 @@ $(document).ready(function () {
     ctx.textalign = "center";
     ctx.fillText("CLICK HERE", 300, 200);
 
-
-    var iterations = 255;
-    var array = []
-    for (var i = 0; i < canvas.width*canvas.height; i++) {array.push(0); }
-
     $(canvas).click(function (e) {
-        array = sampleBuddhbrot(imageData, array, iterations, 100000);
-        drawBuddhabrot(imageData, array);
+        pixels = imageData.data;
+        for (var i = 0; i<canvas.width*canvas.height; i++) {
+            pixels[4*i  ] = reddata.data[4*i];
+            pixels[4*i+1] = greendata.data[4*i+1];
+            pixels[4*i+2] = bluedata.data[4*i+2];
+            pixels[4*i+3] = 255;
+        }
         ctx.putImageData(imageData, 0, 0);
     });
 });
+
+
