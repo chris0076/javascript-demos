@@ -158,18 +158,12 @@ $(document).ready(function () {
     var ctx = canvas.getContext("2d");
     var imageData = ctx.createImageData(canvas.width, canvas.height);
 
-    ctx.font = "bold 16px Arial";
-    ctx.textalign = "center";
-    ctx.fillText("CLICK HERE", 300, 200);
+    drawMandelbrot(imageData, 100);
+    ctx.putImageData(imageData, 0, 0);
 
-    var itervals = [1, 2, 3, 4, 5, 10, 15, 20, 30, 40, 50, 100, 150, 200, 255];
-    var num = 0;
-
-    $(canvas).click(function (e) {
-        iterations = itervals[num];
-        drawMandelbrot(imageData, iterations);
+    $(canvas).mousemove(function (e) {
+        drawMandelbrot(imageData, Math.floor(e.offsetX/4));
         ctx.putImageData(imageData, 0, 0);
-        num = (num + 1) % itervals.length;
     });
 });
 
@@ -182,6 +176,11 @@ $(document).ready(function () {
     var iterations = 5;
     drawMandelbrot(imageData, 255, 10);
     ctx.putImageData(imageData, 0, 0);
+
+    $(canvas).mousemove(function (e) {
+        drawMandelbrot(imageData, 255, Math.floor(e.offsetX/4));
+        ctx.putImageData(imageData, 0, 0);
+    });
 });
 
 $(document).ready(function () {
@@ -197,6 +196,7 @@ $(document).ready(function () {
         ctx.putImageData(imageData, 0, 0);
         drawMandelbrotPath(imageData, ctx, iterations, e.offsetX, e.offsetY);
     });
+
 });
 
 $(document).ready(function () {
