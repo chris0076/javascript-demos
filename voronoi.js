@@ -1,4 +1,4 @@
-function voronoi(x, y) {
+function voronoi(x, y, dist) {
     var px = Math.floor(x);
     var py = Math.floor(y);
 
@@ -11,7 +11,7 @@ function voronoi(x, y) {
             var rx = i - fx + random((i + px) + (j + py) * 100);
             var ry = j - fy + random((i + px) + (j + py) * 1000);
 
-            res = Math.min(res, rx * rx + ry * ry);
+            res = Math.min(res, dist(rx, ry));
         }
     }
     return Math.sqrt(res);
@@ -36,7 +36,7 @@ function voronoiPoints(points, x, y) {
 }
 
 
-function drawVoronoi(image, points, scale, user) {
+function drawVoronoi(image, points, scale, user, dist) {
     var offset = Math.random() * 100;
 
     var data = [];
@@ -47,7 +47,7 @@ function drawVoronoi(image, points, scale, user) {
             if (user) {
                 var temp = voronoiPoints(points, i * scale, j * scale);
             } else {
-                var temp = voronoi(i * scale + offset, j * scale + offset);
+                var temp = voronoi(i * scale + offset, j * scale + offset, dist);
             }
             if (temp < min) {
                 min = temp;
@@ -71,16 +71,26 @@ $(document).ready(function () {
     var ctx = canvas.getContext("2d");
     var imageData = ctx.createImageData(canvas.width, canvas.height);
     var scale = 1 / 64;
+    var dist = euclidean2;
 
-    drawVoronoi(imageData, points, scale);
+    drawVoronoi(imageData, points, scale, null, dist);
     ctx.putImageData(imageData, 0, 0);
 
     $(canvas).click(function () {
-        drawVoronoi(imageData, points, scale);
+        drawVoronoi(imageData, points, scale, null, dist);
         ctx.putImageData(imageData, 0, 0);
     });
 
-
+    $(canvas).keydown(function(e){
+        switch (e.keyCode) {
+            case 65: dist = euclidean2; break;
+            case 83: dist = euclidean; break;
+            case 68: dist = manhattan; break;
+            case 70: dist = chebychev; break;
+        }
+        drawVoronoi(imageData, points, scale, null, dist);
+        ctx.putImageData(imageData, 0, 0);
+    });
 });
 
 $(document).ready(function () {
@@ -99,7 +109,7 @@ $(document).ready(function () {
         p.x = e.offsetX * scale;
         p.y = e.offsetY * scale;
         points.push(p);
-        drawVoronoi(imageData, points, scale, 1);
+        drawVoronoi(imageData, points, scale, 1, euclidean2);
         ctx.putImageData(imageData, 0, 0);
 
         ctx.fillStyle = "#00FF00";
