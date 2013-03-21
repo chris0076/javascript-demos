@@ -251,6 +251,20 @@ $(document).ready(function () {
     $(canvas).click(function (e) {
         render();
     });
+
+    $(canvas).keydown(function(e){
+        var temp = reddata;
+        switch (e.keyCode) {
+            case 65:
+                reddata = greendata;
+                greendata = bluedata;
+                bluedata = temp;
+                break;
+            case 83:
+                reddata = greendata;
+                greendata = temp;
+                break;
+        }
+        render();
+    });
 });
-
-
