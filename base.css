@@ -1,4 +1,87 @@
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #383838;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.canvas-container {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
 canvas {
-    border: 1px;
-    border-color: #000;
+    display: inline;
+    margin-right: auto;
+    margin-left: auto;
+    border-style:solid;
+    border-width:1px;
+}
+
+.container {
+    background-color: #303030;
+    color: #DDDDDD;
+    margin-right: auto;
+    margin-left: auto;
+    width: 720px;
+    /*height: 100%;*/
+}
+
+.container2 {
+    margin-right: auto;
+    margin-left: auto;
+    width: 720px;
+    padding: 10px 0px 0px 0px;
+}
+
+.content {
+    background-color: #404040;
+    color: #DDDDDD;
+    margin: 0px 20px 10px 20px;
+    padding: 10px 10px 10px 10px;
+
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+.content:hover{
+    background-color: #505050;
+}
+
+.text {
+    background-color: #666;
+    color: #DDDDDD;
+    padding: 10px 10px 10px 10px;
+
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.title {
+    background-color: #2288DD;
+    color: #DDDDDD;
+    padding: 10px 10px 10px 10px;
+    font-weight: bold;
+    font-size: 120%;
+
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+a {
+    text-decoration:  none;
+}
+a:visited {
+    color: #00AAAA;
+
+}
+a:hover {
+    color: #00FFFF;
+}
+
+.shadow {
+    box-shadow: 3px 3px 4px #000;
 }

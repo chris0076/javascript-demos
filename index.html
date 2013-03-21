@@ -1,22 +1,104 @@
 <html>
     <head>
         <title>Canvas Stuff</title>
-        <style type="text/css" src="base.css"></style>
+        <link rel="stylesheet" href="base.css" />
         <script src="jquery-1.7.1.min.js"></script>
 
+        <script src="page.js"></script>
         <script src="utils.js"></script>
         <script src="voronoi.js"></script>
         <script src="mandelbrot.js"></script>
     </head>
+
     <body>
-        <canvas id="voronoi" width="500" height="500"></canvas>
-        <canvas id="voronoipoints" width="500" height="500"></canvas>
-        <canvas id="mandelbrot" width="600" height="400"></canvas>
-        <canvas id="mandelbrotsmooth" width="600" height="400"></canvas>
-        <canvas id="mandelbrotpath" width="600" height="400"></canvas>
-        <canvas id="buddhabrot_red" width="600" height="400"></canvas>
-        <canvas id="buddhabrot_blue" width="600" height="400"></canvas>
-        <canvas id="buddhabrot_green" width="600" height="400"></canvas>
-        <canvas id="nebulabrot" width="600" height="400"></canvas>
+        <div class="container">
+            <div class="container2">
+                <div class="content">
+                    <div class="title">
+                        Voronoi (worley noise)
+                    </div>
+                    <div class="text">
+                        <div class="canvas-container">
+                            <canvas id="voronoi" width="500" height="500" tabindex="1"></canvas>
+                        </div>
+                        This is just a basic demo of Voronoi (worley noise).
+                        <p>
+                        Clicking the canvas will rerender with a new set of random points. Pressing <code>A</code>, <code>S</code>, <code>D</code>, or <code>F</code> will change the distance metric used to euclidean squared, euclidean, manhattan, or chebychev, respectively.
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="title">
+                        Interactive Voronoi (worley noise)
+                    </div>
+                    <div class="text">
+                        <div class="canvas-container">
+                            <canvas id="voronoipoints" width="500" height="500"></canvas>
+                        </div>
+                        This demo is the same as the one before with the added ability to click to add points to calculate the image from. The algorthm used is extremely naive (n^2 comparisons), and is not suitable for much more than a couple points.
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="title">
+                        Mandelbrot
+                    </div>
+                    <div class="text">
+                        <div class="canvas-container">
+                            <canvas id="mandelbrot" width="600" height="400"></canvas>
+                        </div>
+                        This is a mandelbrot.
+                        <p>
+                        As you scrub from left to right it adds more iterations (1 iteration per 4 pixels). With this you can see the added detail with running more iterations.
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="title">
+                        Smoothing the Mandelbrot
+                    </div>
+                    <div class="text">
+                        <div class="canvas-container">
+                            <canvas id="mandelbrotsmooth" width="600" height="400"></canvas>
+                        </div>
+                        This is the same as before with an added smoothing function for the coloring.
+                        <p>
+                        Scrubbing from left to right scales the amount before the smoothing repeats.
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="title">
+                        Mandelbrot Path
+                    </div>
+                    <div class="text">
+                        <div class="canvas-container">
+                            <canvas id="mandelbrotpath" width="600" height="400"></canvas>
+                        </div>
+                        This demo shows the path that is followed when iterating the mandelbrot equation.
+                        <p>
+                        When the line is red, it means that the point is inside the Mandelbrot Set. If it is green, then it is not.
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="title">
+                        Buddhabrot and Nebulabrot
+                    </div>
+                    <div class="text">
+                        The following three canvases are demos of what is called the buddhabrot (the name comes from the fact that it looks like an image of Buddha rotated 90 degrees). This method of rendering the mandelbrot set makes use of the effect seen in the previous demo. Rather than just rendering how long it takes for the path to escape from the mandelbrot set it makes a 2D histogram of the points as they are escaping.
+                        <p>
+                        As you mouseover them they will begin calculating in the background. Upon clicking they will render the current values.
+                        <div class="canvas-container">
+                            <canvas id="buddhabrot_red" width="600" height="400"></canvas>
+                            <canvas id="buddhabrot_green" width="600" height="400"></canvas>
+                            <canvas id="buddhabrot_blue" width="600" height="400"></canvas>
+                        </div>
+                        The following is the result if the images above are added together with each one going to a different color channel. This method of rendering the mandelbrot set is called the nebulabrot (due to the fact that the coloring scheme is similar to the method that is used when taking pictures of nebulas). Note: for this to work properly you must have ran the previous 3 canvases.
+                        <p>
+                        Pressing <code>A</code> will cycle the color channels r -> g -> b.
+                        Pressing <code>S</code> will flip the red and green channels.
+                        <div class="canvas-container">
+                            <canvas id="nebulabrot" width="600" height="400" tabindex="2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
