@@ -237,7 +237,7 @@ $(document).ready(function () {
     ctx.textalign = "center";
     ctx.fillText("CLICK HERE", 300, 200);
 
-    $(canvas).click(function (e) {
+    function render() {
         pixels = imageData.data;
         for (var i = 0; i<canvas.width*canvas.height; i++) {
             pixels[4*i  ] = reddata.data[4*i];
@@ -246,6 +246,10 @@ $(document).ready(function () {
             pixels[4*i+3] = 255;
         }
         ctx.putImageData(imageData, 0, 0);
+    }
+
+    $(canvas).click(function (e) {
+        render();
     });
 });
 
