@@ -74,6 +74,13 @@ $(document).ready(function () {
 
     drawVoronoi(imageData, points, scale);
     ctx.putImageData(imageData, 0, 0);
+
+    $(canvas).click(function () {
+        drawVoronoi(imageData, points, scale);
+        ctx.putImageData(imageData, 0, 0);
+    });
+
+
 });
 
 $(document).ready(function () {
