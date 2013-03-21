@@ -224,9 +224,9 @@ $(document).ready(function () {
         return imageData;
     }
 
-    bluedata = make_buddhabrot("buddhabrot_red", 50);
-    greendata = make_buddhabrot("buddhabrot_blue", 500);
-    reddata = make_buddhabrot("buddhabrot_green", 5000)
+    bluedata = make_buddhabrot("buddhabrot_blue", 50);
+    greendata = make_buddhabrot("buddhabrot_green", 500);
+    reddata = make_buddhabrot("buddhabrot_red", 5000);
 
 
     var canvas = document.getElementById("nebulabrot");
