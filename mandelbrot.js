@@ -109,10 +109,19 @@ function drawMandelbrot(image, iterations, smooth) {
 
     var pitchx = (maxx - minx) / image.width;
     var pitchy = (maxy - miny) / image.height;
+    var gradient = []
+    for (var i=0; i < iterations; i++) {
+        gradient[i] = i;
+        gradient[2*iterations-i-1] = i
+    }
 
     for (var i = 0; i < image.width; i++) {
         for (var j = 0; j < image.height; j++) {
-            var val = mandelbrot(i*pitchx+minx, j*pitchy+miny, iterations, smooth) / iterations * 255;
+            if (smooth) {
+                var val = gradient[mandelbrot(i*pitchx+minx, j*pitchy+miny, iterations, smooth)];
+            } else {
+                var val = mandelbrot(i*pitchx+minx, j*pitchy+miny, iterations, smooth) / iterations * 255;
+            }
             setPixelVal(image, i, j, val);
         }
     }
