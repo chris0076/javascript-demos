@@ -275,7 +275,8 @@ $(document).ready(function () {
 
         ctx.font = "bold 16px Arial";
         ctx.textalign = "center";
-        ctx.fillText("CLICK HERE", 300, 200);
+        var string = iterations + " Iterations";
+        ctx.fillText(string, canvas.width/2 - ctx.measureText(string ).width/2, canvas.height/2);
 
         var array = []
         for (var i = 0; i < canvas.width*canvas.height; i++) {array.push(0); }
@@ -303,7 +304,8 @@ $(document).ready(function () {
 
     ctx.font = "bold 16px Arial";
     ctx.textalign = "center";
-    ctx.fillText("CLICK HERE", 300, 200);
+    var string = "CLICK HERE";
+    ctx.fillText(string, canvas.width/2 - ctx.measureText(string ).width/2, canvas.height/2);
 
     function render() {
         pixels = imageData.data;

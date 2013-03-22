@@ -99,7 +99,8 @@ $(document).ready(function () {
     var ctx = canvas.getContext("2d");
     ctx.font = "bold 16px Arial";
     ctx.textalign = "center";
-    ctx.fillText("CLICK HERE", canvas.width/2, canvas.height/2);
+    var string = "CLICK HERE";
+    ctx.fillText(string, canvas.width/2 - ctx.measureText(string ).width/2, canvas.height/2);
 
     $(canvas).click(function (e) {
         var imageData = ctx.createImageData(canvas.width, canvas.height);
