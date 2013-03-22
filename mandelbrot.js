@@ -101,14 +101,19 @@ function drawBuddhabrot(image, array) {
     }
 }
 
-function drawMandelbrot(image, iterations, smooth) {
-    var minx = -2.0;
-    var maxx = 1.0;
-    var miny = -1.0;
-    var maxy = 1.0;
+function drawMandelbrot(image, iterations, smooth, center, zoom) {
+    if (!center) {
+        var center = {"x": -.5, "y": 0}
+        var zoom = 1;
+    }
+    var pitchx = zoom * 3 / image.width;
+    var pitchy = zoom * 2 / image.height;
 
-    var pitchx = (maxx - minx) / image.width;
-    var pitchy = (maxy - miny) / image.height;
+    var minx = center.x - zoom * 3 / 2.;
+    var maxx = minx + image.width * pitchx
+    var miny = center.y - zoom;
+    var maxy = miny + image.height * pitchy;
+
     var gradient = []
     for (var i=0; i < iterations; i++) {
         gradient[i] = i;
@@ -151,18 +156,44 @@ function drawMandelbrotPath(image, ctx, iterations, x, y) {
     }
 }
 
-
 $(document).ready(function () {
     var points = [];
     var canvas = document.getElementById("mandelbrot");
     var ctx = canvas.getContext("2d");
     var imageData = ctx.createImageData(canvas.width, canvas.height);
 
-    drawMandelbrot(imageData, 100);
+    var center = {
+        "x": -0.5,
+        "y": 0.0,
+    }
+    var zoom = 1;
+    drawMandelbrot(imageData, 255, 0, center, zoom);
+    ctx.putImageData(imageData, 0, 0);
+
+    $(canvas).mousedown(function (e) {
+        switch (e.button) {
+            case 0: zoom *= Math.pow(2, -.5); break; // left click
+            case 2: zoom *= Math.pow(2, .5); break; // right click
+        }
+        center.x += (e.offsetX - (imageData.width/2)) * 3 * zoom / imageData.width;
+        center.y += (e.offsetY - (imageData.height/2)) * 2 * zoom / imageData.height;
+        drawMandelbrot(imageData, 255, 0, center, zoom);
+        ctx.putImageData(imageData, 0, 0);
+    });
+    $(canvas).bind("contextmenu", function(event) {event.preventDefault();});
+});
+
+$(document).ready(function () {
+    var points = [];
+    var canvas = document.getElementById("mandelbrotiteration");
+    var ctx = canvas.getContext("2d");
+    var imageData = ctx.createImageData(canvas.width, canvas.height);
+
+    drawMandelbrot(imageData, 100, 0);
     ctx.putImageData(imageData, 0, 0);
 
     $(canvas).mousemove(function (e) {
-        drawMandelbrot(imageData, Math.floor(e.offsetX/4));
+        drawMandelbrot(imageData, Math.floor(e.offsetX/4), 0);
         ctx.putImageData(imageData, 0, 0);
     });
 });
@@ -178,7 +209,7 @@ $(document).ready(function () {
     ctx.putImageData(imageData, 0, 0);
 
     $(canvas).mousemove(function (e) {
-        drawMandelbrot(imageData, 255, Math.floor(e.offsetX/4));
+        drawMandelbrot(imageData, 255, Math.floor(e.offsetX/4), 0);
         ctx.putImageData(imageData, 0, 0);
     });
 });
