@@ -22,6 +22,14 @@ canvas {
     border-style:solid;
     border-width:1px;
 }
+coord {
+    color: #00AAAA;
+}
+
+coord:hover {
+    color: #00FFFF;
+    cursor: hand;
+}
 
 .container {
     background-color: #303030;

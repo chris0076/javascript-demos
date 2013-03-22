@@ -206,6 +206,18 @@ $(document).ready(function () {
     });
     $(canvas).bind("contextmenu", function(event) {event.preventDefault();});
 
+    $('coord').click(function () {
+        var array = $(this).text().trim().slice(1,-1).split(',');
+        frame.x = parseFloat(array[0]);
+        frame.y = parseFloat(array[1]);
+        frame.zoom = parseFloat(array[2]);
+        centerx.val(frame.x);
+        centery.val(frame.y);
+        zoom.val(frame.zoom);
+        drawMandelbrot(imageData, 255, 0, frame);
+        ctx.putImageData(imageData, 0, 0);
+    });
+
 });
 
 $(document).ready(function () {
