@@ -44,10 +44,17 @@
                     <div class="text">
                         <div class="canvas-container">
                             <canvas id="mandelbrot" width="600" height="400"></canvas>
+                            <label for="centerx">Center X</label>
+                            <input type="text" id="centerx" value="-0.5" />
+                            <label for="centery">Center Y</label>
+                            <input type="text" id="centery" value="0.0" />
+                            <br>
+                            <label for="zoom">Zoom</label>
+                            <input type="text" id="zoom" value="0"/>
                         </div>
                         This is a mandelbrot.
                         <p>
-                        Left clicking will zoom in on that point, right clicking will zoom out.
+                        Left clicking will zoom in on that point, right clicking will zoom out. Note: Around a zoom level of 45 you will notice the limits of the precision of javascript's floats. This causes pixellation and banding in the image.
                     </div>
                 </div>
                 <div class="content">

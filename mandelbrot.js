@@ -101,17 +101,17 @@ function drawBuddhabrot(image, array) {
     }
 }
 
-function drawMandelbrot(image, iterations, smooth, center, zoom) {
-    if (!center) {
-        var center = {"x": -.5, "y": 0}
-        var zoom = 1;
+function drawMandelbrot(image, iterations, smooth, frame) {
+    if (!frame) {
+        var frame = {"x": -.5, "y": 0, "zoom": 0}
     }
+    zoom = Math.pow(2, -frame.zoom)
     var pitchx = zoom * 3 / image.width;
     var pitchy = zoom * 2 / image.height;
 
-    var minx = center.x - zoom * 3 / 2.;
+    var minx = frame.x - zoom * 3 / 2.;
     var maxx = minx + image.width * pitchx
-    var miny = center.y - zoom;
+    var miny = frame.y - zoom;
     var maxy = miny + image.height * pitchy;
 
     var gradient = []
@@ -161,26 +161,51 @@ $(document).ready(function () {
     var canvas = document.getElementById("mandelbrot");
     var ctx = canvas.getContext("2d");
     var imageData = ctx.createImageData(canvas.width, canvas.height);
+    var centerx = $("#centerx");
+    var centery = $("#centery");
+    var zoom = $("#zoom");
 
-    var center = {
-        "x": -0.5,
-        "y": 0.0,
+    var frame = {
+        "x": parseFloat(centerx.val()),
+        "y": parseFloat(centery.val()),
+        "zoom": parseFloat(zoom.val()),
     }
-    var zoom = 1;
-    drawMandelbrot(imageData, 255, 0, center, zoom);
+    drawMandelbrot(imageData, 255, 0, frame);
     ctx.putImageData(imageData, 0, 0);
+
+    function binder(element, variable) {
+        fn = function (element, variable) {
+            if (parseFloat(element.val()) !== frame[variable]) {
+                frame[variable] = parseFloat(element.val());
+                drawMandelbrot(imageData, 255, 0, frame);
+                ctx.putImageData(imageData, 0, 0);
+            }
+        };
+        element.focusout(function () { fn(element, variable); });
+        element.keydown(function (e) {
+            if (e.which == 13) fn(element, variable);
+        });
+    };
+
+    binder(centerx, "x");
+    binder(centery, "y");
+    binder(zoom, "zoom");
 
     $(canvas).mousedown(function (e) {
         switch (e.button) {
-            case 0: zoom *= Math.pow(2, -.5); break; // left click
-            case 2: zoom *= Math.pow(2, .5); break; // right click
+            case 0: frame.zoom += .5; break; // left click
+            case 2: frame.zoom -= .5; break; // right click
         }
-        center.x += (e.offsetX - (imageData.width/2)) * 3 * zoom / imageData.width;
-        center.y += (e.offsetY - (imageData.height/2)) * 2 * zoom / imageData.height;
-        drawMandelbrot(imageData, 255, 0, center, zoom);
+        frame.x += (e.offsetX - (imageData.width/2)) * 3 * Math.pow(2,-frame.zoom) / imageData.width;
+        frame.y += (e.offsetY - (imageData.height/2)) * 2 * Math.pow(2,-frame.zoom) / imageData.height;
+        centerx.val(frame.x);
+        centery.val(frame.y);
+        zoom.val(frame.zoom);
+        drawMandelbrot(imageData, 255, 0, frame);
         ctx.putImageData(imageData, 0, 0);
     });
     $(canvas).bind("contextmenu", function(event) {event.preventDefault();});
+
 });
 
 $(document).ready(function () {
