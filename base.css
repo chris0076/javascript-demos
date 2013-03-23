@@ -22,13 +22,28 @@ canvas {
     border-style:solid;
     border-width:1px;
 }
+canvas:hover {
+    border-color: #2288DD;
+}
+
+h1 {
+    text-align: center;
+    color: #EEEEEE;
+}
+
+h5 {
+    text-align: center;
+}
+
+super { position: relative; top: -0.5em; font-size: 80%; }
+
 coord {
     color: #00AAAA;
 }
 
 coord:hover {
     color: #00FFFF;
-    cursor: hand;
+    cursor: pointer;
 }
 
 .container {
