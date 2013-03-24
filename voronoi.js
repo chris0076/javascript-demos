@@ -115,6 +115,7 @@ $(document).ready(function () {
 
         ctx.fillStyle = "#00FF00";
         for (var i = 0; i < points.length; i++) {
+            ctx.beginPath();
             ctx.arc(points[i].x / scale, points[i].y / scale, 2, 0, 2 * Math.PI);
             ctx.fill();
         }
