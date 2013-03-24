@@ -170,15 +170,12 @@ $(document).ready(function () {
         "y": parseFloat(centery.val()),
         "zoom": parseFloat(zoom.val()),
     }
-    drawMandelbrot(imageData, 255, 0, frame);
-    ctx.putImageData(imageData, 0, 0);
 
     function binder(element, variable) {
         fn = function (element, variable) {
             if (parseFloat(element.val()) !== frame[variable]) {
                 frame[variable] = parseFloat(element.val());
-                drawMandelbrot(imageData, 255, 0, frame);
-                ctx.putImageData(imageData, 0, 0);
+                render(imageData, frame);
             }
         };
         element.focusout(function () { fn(element, variable); });
@@ -186,23 +183,29 @@ $(document).ready(function () {
             if (e.which == 13) fn(element, variable);
         });
     };
-
     binder(centerx, "x");
     binder(centery, "y");
     binder(zoom, "zoom");
+
+    function render(imageData, frame) {
+        drawMandelbrot(imageData, 255, 10, frame);
+        ctx.putImageData(imageData, 0, 0);
+    }
+
+    render(imageData, frame);
 
     $(canvas).mousedown(function (e) {
         switch (e.button) {
             case 0: frame.zoom += .5; break; // left click
             case 2: frame.zoom -= .5; break; // right click
         }
-        frame.x += (e.offsetX - (imageData.width/2)) * 3 * Math.pow(2,-frame.zoom) / imageData.width;
-        frame.y += (e.offsetY - (imageData.height/2)) * 2 * Math.pow(2,-frame.zoom) / imageData.height;
+        var p = getPos(e, canvas);
+        frame.x += (p.x - (imageData.width/2)) * 3 * Math.pow(2,-frame.zoom) / imageData.width;
+        frame.y += (p.y - (imageData.height/2)) * 2 * Math.pow(2,-frame.zoom) / imageData.height;
         centerx.val(frame.x);
         centery.val(frame.y);
         zoom.val(frame.zoom);
-        drawMandelbrot(imageData, 255, 0, frame);
-        ctx.putImageData(imageData, 0, 0);
+        render(imageData, frame);
     });
     $(canvas).bind("contextmenu", function(event) {event.preventDefault();});
 
@@ -214,8 +217,7 @@ $(document).ready(function () {
         centerx.val(frame.x);
         centery.val(frame.y);
         zoom.val(frame.zoom);
-        drawMandelbrot(imageData, 255, 0, frame);
-        ctx.putImageData(imageData, 0, 0);
+        render(imageData, frame);
     });
 
 });
@@ -230,7 +232,7 @@ $(document).ready(function () {
     ctx.putImageData(imageData, 0, 0);
 
     $(canvas).mousemove(function (e) {
-        drawMandelbrot(imageData, Math.floor(e.offsetX/4), 0);
+        drawMandelbrot(imageData, Math.floor(getPos(e, canvas).x/4), 0);
         ctx.putImageData(imageData, 0, 0);
     });
 });
@@ -246,7 +248,7 @@ $(document).ready(function () {
     ctx.putImageData(imageData, 0, 0);
 
     $(canvas).mousemove(function (e) {
-        drawMandelbrot(imageData, 255, Math.floor(e.offsetX/4), 0);
+        drawMandelbrot(imageData, 255, Math.floor(getPos(e, canvas).x/4), 0);
         ctx.putImageData(imageData, 0, 0);
     });
 });
@@ -262,7 +264,8 @@ $(document).ready(function () {
 
     $(canvas).mousemove(function (e) {
         ctx.putImageData(imageData, 0, 0);
-        drawMandelbrotPath(imageData, ctx, iterations, e.offsetX, e.offsetY);
+        var p = getPos(e, canvas);
+        drawMandelbrotPath(imageData, ctx, iterations, p.x, p.y);
     });
 
 });

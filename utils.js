@@ -25,3 +25,10 @@ function setPixelVal(image, x, y, val) {
     image.data[idx * 4 + 2] = val;
     image.data[idx * 4 + 3] = 255;
 }
+
+function getPos(event, canvas) {
+    return {
+        x: event.pageX - canvas.offsetLeft,
+        y: event.pageY - canvas.offsetTop
+    };
+}

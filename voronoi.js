@@ -106,9 +106,9 @@ $(document).ready(function () {
         var imageData = ctx.createImageData(canvas.width, canvas.height);
 
         var scale = 1 / 64;
-        var p = {};
-        p.x = e.offsetX * scale;
-        p.y = e.offsetY * scale;
+        var p = getPos(e, canvas);
+        p.x *= scale;
+        p.y *= scale;
         points.push(p);
         drawVoronoi(imageData, points, scale, 1, euclidean2);
         ctx.putImageData(imageData, 0, 0);
