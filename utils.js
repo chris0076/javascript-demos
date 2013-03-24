@@ -32,3 +32,12 @@ function getPos(event, canvas) {
         y: event.pageY - canvas.offsetTop
     };
 }
+
+function writeString(canvas, string) {
+    var ctx = canvas.getContext("2d");
+    ctx.save();
+    ctx.font = "bold 16px Arial";
+    ctx.textalign = "center";
+    ctx.fillText(string, canvas.width/2 - ctx.measureText(string).width/2, canvas.height/2);
+    ctx.restore();
+}

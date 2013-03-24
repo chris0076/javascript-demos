@@ -275,11 +275,7 @@ $(document).ready(function () {
         var canvas = document.getElementById(id);
         var ctx = canvas.getContext("2d");
         var imageData = ctx.createImageData(canvas.width, canvas.height);
-
-        ctx.font = "bold 16px Arial";
-        ctx.textalign = "center";
-        var string = iterations + " Iterations";
-        ctx.fillText(string, canvas.width/2 - ctx.measureText(string ).width/2, canvas.height/2);
+        writeString(canvas, iterations + " Iterations");
 
         var array = []
         for (var i = 0; i < canvas.width*canvas.height; i++) {array.push(0); }
@@ -304,11 +300,8 @@ $(document).ready(function () {
     var canvas = document.getElementById("nebulabrot");
     var ctx = canvas.getContext("2d");
     var imageData = ctx.createImageData(canvas.width, canvas.height);
+    writeString(canvas, "CLICK HERE");
 
-    ctx.font = "bold 16px Arial";
-    ctx.textalign = "center";
-    var string = "CLICK HERE";
-    ctx.fillText(string, canvas.width/2 - ctx.measureText(string ).width/2, canvas.height/2);
 
     function render() {
         pixels = imageData.data;

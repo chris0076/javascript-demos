@@ -97,10 +97,7 @@ $(document).ready(function () {
     var points = [];
     var canvas = document.getElementById("voronoipoints");
     var ctx = canvas.getContext("2d");
-    ctx.font = "bold 16px Arial";
-    ctx.textalign = "center";
-    var string = "CLICK HERE";
-    ctx.fillText(string, canvas.width/2 - ctx.measureText(string ).width/2, canvas.height/2);
+    writeString(canvas, "CLICK HERE");
 
     $(canvas).click(function (e) {
         var imageData = ctx.createImageData(canvas.width, canvas.height);
