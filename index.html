@@ -3,8 +3,8 @@
         <meta charset="UTF-8">
         <title>Canvas Stuff</title>
         <link rel="stylesheet" href="base.css" />
-        <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 
+        <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="page.js"></script>
         <script type="text/javascript" src="utils.js"></script>
         <script type="text/javascript" src="voronoi.js"></script>
@@ -16,6 +16,7 @@
             <div class="container2">
                 <h1>Javascript Demos</h1>
                 <h5>(These work best with chrome)</h5>
+
                 <div class="content">
                     <div class="title">Voronoi (Worley noise)</div>
                     <div class="text">
@@ -27,15 +28,17 @@
                         Clicking the canvas will rerender with a new set of random points. Pressing <code>A</code>, <code>S</code>, <code>D</code>, or <code>F</code> will change the distance metric used to Euclidean squared, Euclidean, Manhattan, or Chebychev, respectively.
                     </div>
                 </div>
+
                 <div class="content">
                     <div class="title">Interactive Voronoi (Worley noise)</div>
                     <div class="text">
                         <div class="canvas-container">
                             <canvas id="voronoipoints" width="500" height="500"></canvas>
                         </div>
-                        This demo is the same as the one before with the added ability to click to add points to calculate the image from. The algorthm used is extremely naive (n<super>2</super> comparisons), and is not suitable for much more than a couple points. Performance could be improved by reducing the comparisons required by using Fortune's algorthm.
+                        This demo is the same as the one before with the added ability to click to add points to calculate the image from. The algorthm used is extremely naive (n<super>2</super>comparisons), and is not suitable for much more than a couple points. Performance could be improved by reducing the comparisons required by using Fortune's algorthm.
                     </div>
                 </div>
+
                 <div class="content">
                     <div class="title">Mandelbrot</div>
                     <div class="text">
@@ -49,17 +52,19 @@
                             <label for="zoom">Zoom</label>
                             <input type="text" id="zoom" value="0"/>
                         </div>
-                        This is a mandelbrot. In the points of interest listed below, you can see some of the points of self similarity all over the complex plane at varying zoom levels.
+                        Z<sub>n+1</sub> = Z<sub>n</sub><super>2</super> + C<br>
+                        This is a mandelbrot. This image is rendered with a simple equation.
                         <p>
                         Left clicking will zoom in on that point, right clicking will zoom out. Note: Around a zoom level of 45 you will notice the limits of the precision of javascript's floats. This causes pixellation and banding in the image.
                         <p>
-                        Here are some points of interest:<br>
+                        In the points of interest listed below, you can see some of the points of self similarity all over the complex plane at varying zoom levels.<br>
                         <coord>(-0.5, 0, 0)</coord><br>
                         <coord>(-0.041739845552092626, 0.9862504959838833, 8)</coord><br>
                         <coord>(-1.2840349708699048, 0.42734845335127464, 12)</coord><br>
                         <coord>(-1.9539647648572862, 1.3152440297281372e-12, 29)</coord><br>
                     </div>
                 </div>
+
                 <div class="content">
                     <div class="title">Mandelbrot Iterations</div>
                     <div class="text">
@@ -69,6 +74,7 @@
                         As you scrub from left to right it adds more iterations (1 iteration per 4 pixels). With this you can see the added detail with running more iterations.
                     </div>
                 </div>
+
                 <div class="content">
                     <div class="title">Smoothing the Mandelbrot</div>
                     <div class="text">
@@ -80,6 +86,7 @@
                         Scrubbing from left to right scales the amount before the smoothing repeats.
                     </div>
                 </div>
+
                 <div class="content">
                     <div class="title">Mandelbrot Path</div>
                     <div class="text">
@@ -91,6 +98,7 @@
                         When the line is red, it means that the point is inside the Mandelbrot Set. If it is green, then it is not.
                     </div>
                 </div>
+
                 <div class="content">
                     <div class="title">Buddhabrot and Nebulabrot</div>
                     <div class="text">
@@ -113,7 +121,9 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
+
     </body>
 </html>
