@@ -11,7 +11,7 @@ function drawChaos(image, points) {
 }
 
 $(document).ready(function () {
-    var canvas = document.getElementById("chaostheory");
+    var canvas = document.getElementById("chaosgame");
     var ctx = canvas.getContext("2d");
     writeString(canvas, "CLICK HERE");
     var imageData = ctx.createImageData(canvas.width, canvas.height);

@@ -5,6 +5,8 @@
         <link rel="stylesheet" href="base.css" />
 
         <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/javascript" src="page.js"></script>
         <script type="text/javascript" src="utils.js"></script>
         <script type="text/javascript" src="physics.js"></script>
@@ -26,14 +28,16 @@
                             <canvas id="euler" width="500" height="500" tabindex="1"></canvas>
                         </div>
                         This is just a basic demo of Euler integration applied to a planetary orbit simulation. When you mouseover the canvas, the simulation will run.
+                        $$ \frac {F}{m} = \frac{d^2 \vec p}{dt^2} $$
+                        $$ F = - G \frac{m_1 m_2}{| \vec p_1- \vec p_2|} $$
                     </div>
                 </div>
 
                 <div class="content">
-                    <div class="title">Chaos Theory</div>
+                    <div class="title">Chaos Game</div>
                     <div class="text">
                         <div class="canvas-container">
-                            <canvas id="chaostheory" width="500" height="500" tabindex="1"></canvas>
+                            <canvas id="chaosgame" width="500" height="500" tabindex="1"></canvas>
                         </div>
                         This is a demo of the idea that very complex systems can come from very simple rules (the chaos game). In this instance you click three points to form a triangle, then from that trangle it randomly picks one of the corners to start at. Then from there it continues to randomly pick corners, and as it does this it sets the current point to be the middle of the current location and the corner selected. By iterating this rule many times the shape of Sierpinski's triangle appears from seemingly random points.
                         <p>
@@ -50,6 +54,14 @@
                         This is just a basic demo of Voronoi (worley noise).
                         <p>
                         Clicking the canvas will rerender with a new set of random points. Pressing <code>A</code>, <code>S</code>, <code>D</code>, or <code>F</code> will change the distance metric used to Euclidean squared, Euclidean, Manhattan, or Chebychev, respectively.
+                        <p>
+                        Euclidean squared: \( d = (x_2 - x_2)^2 + (x_2 - x_1)^2 \)
+                        <br>
+                        Euclidean: \( d = \sqrt{(x_2 - x_2)^2 + (x_2 - x_1)^2} \)
+                        <br>
+                        Manhattan: \( d = |x_2 - x_2| + |y_2 - y_1| \)
+                        <br>
+                        Chebychev: \( d = max(|x_2 - x_2|, |y_2 - y_1|) \)
                     </div>
                 </div>
 
@@ -59,7 +71,7 @@
                         <div class="canvas-container">
                             <canvas id="voronoipoints" width="500" height="500"></canvas>
                         </div>
-                        This demo is the same as the one before with the added ability to click to add points to calculate the image from. The algorthm used is extremely naive (n<super>2</super>comparisons), and is not suitable for much more than a couple points. Performance could be improved by reducing the comparisons required by using Fortune's algorthm.
+                        This demo is the same as the one before with the added ability to click to add points to calculate the image from. The algorthm used is extremely naive (n<super>2</super> comparisons), and is not suitable for much more than a couple points. Performance could be improved by reducing the comparisons required by using Fortune's algorthm.
                     </div>
                 </div>
 
@@ -76,7 +88,7 @@
                             <label for="zoom">Zoom</label>
                             <input type="text" id="zoom" value="0"/>
                         </div>
-                        Z<sub>n+1</sub> = Z<sub>n</sub><super>2</super> + C<br>
+                        $$Z_{n+1} = Z_{n}^2 + C$$
                         This is a mandelbrot. This image is rendered with a simple equation.
                         <p>
                         Left clicking will zoom in on that point, right clicking will zoom out. Note: Around a zoom level of 45 you will notice the limits of the precision of javascript's floats. This causes pixellation and banding in the image.
@@ -105,6 +117,9 @@
                         <div class="canvas-container">
                             <canvas id="mandelbrotsmooth" width="600" height="400"></canvas>
                         </div>
+                        $$ \nu = \frac{\left ( n - log_p(log|Z_n|) \right) \times N} { S }$$
+                        Where \( \nu \) is an index to a gradient, \( n \) is the number of iterations that were done, \( p \) is the power of the mandelbrot equation (in most cases this is just 2), \( Z_n \) is the value at the final iteration, \( N \) is the maximum number of iterations, and \( S \) is an arbitarty smoothing amount (in this example it is what is changed as you move your mouse across the canvas).
+                        <p>
                         This is the same as before with an added smoothing function for the coloring.
                         <p>
                         Scrubbing from left to right scales the amount before the smoothing repeats.
@@ -138,7 +153,7 @@
                         </div>
                         The following is the result if the images above are added together with each one going to a different color channel. This method of rendering the mandelbrot set is called the nebulabrot (due to the fact that the coloring scheme is similar to the method that is used when taking pictures of nebulas). Note: for this to work properly you must have ran the previous three canvases.
                         <p>
-                        Pressing <code>A</code> will cycle the color channels r -> g -> b.
+                        Pressing <code>A</code> will cycle the color channels \(red \rightarrow green \rightarrow blue \).
                         Pressing <code>S</code> will flip the red and green channels.
                         <div class="canvas-container">
                             <canvas id="nebulabrot" width="600" height="400" tabindex="2"></canvas>
