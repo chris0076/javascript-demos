@@ -188,10 +188,10 @@ function test() {
     isEqual(d.magnitude(), 5.385164807134504);
 
     console.log("normalize");
-    isEqualA(a.normalize().comp, [0.267261241912, 0.534522483825, 0.801783725737]);
-    isEqualA(b.normalize().comp, [0.554700196225, 0.832050294338]);
-    isEqualA(c.normalize().comp, [0.028244112819, 0.518420079449, 0.85465951777]);
-    isEqualA(d.normalize().comp, [-0.371390676354, -0.928476690885]);
+    isEqualA(a.normalized().comp, [0.267261241912, 0.534522483825, 0.801783725737]);
+    isEqualA(b.normalized().comp, [0.554700196225, 0.832050294338]);
+    isEqualA(c.normalized().comp, [0.028244112819, 0.518420079449, 0.85465951777]);
+    isEqualA(d.normalized().comp, [-0.371390676354, -0.928476690885]);
 
     console.log("angleVec");
     isEqual(a.angleVec(b), 0.9360174829018622);

@@ -51,7 +51,7 @@ function Vector(comp) {
         return Math.sqrt(this.magnitude2());
     };
 
-    this.normalize = function () {
+    this.normalized = function () {
         return this.div(this.magnitude());
     };
 
