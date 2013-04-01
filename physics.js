@@ -5,6 +5,21 @@ function euler(bodies, dt) {
     this.points.push(this.position.comp);
 }
 
+function symplecticEuler(bodies, dt) {
+    var accel = this.accelerate(bodies, dt);
+    this.velocity.iadd(accel.mul(dt / this.m));
+    this.position.iadd(this.velocity.mul(dt));
+    this.points.push(this.position.comp);
+}
+
+function verlet(bodies, dt) {
+    var a = this.accelerate(bodies, dt);
+    var x = this.position.copy();
+    var xlast = new Vector(this.points.slice(-1)[0]);
+    this.points.push(this.position.comp);
+    this.position = x.mul(2).sub(xlast).add(a.mul(dt*dt / this.m));
+}
+
 $(document).ready(function () {
     function Planet(position, velocity, m, r, color, update) {
         this.m = m;
@@ -15,6 +30,7 @@ $(document).ready(function () {
         this.position = new Vector(position);
         this.velocity = new Vector(velocity);
         this.points = [this.position.comp];
+
 
         this.accelerate = function (bodies, dt) {
             var accel = new Vector(0,0);
