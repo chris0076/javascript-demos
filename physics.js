@@ -31,7 +31,8 @@ $(document).ready(function () {
 
         this.render = function (ctx) {
             ctx.save();
-            ctx.lineWidth = .5;
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = this.color;
             ctx.beginPath();
             ctx.moveTo(this.points[0][0], this.points[0][1]);
             for (var i=1; i<this.points.length; i++) {
