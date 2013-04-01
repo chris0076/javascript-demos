@@ -135,4 +135,6 @@ function Vector(comp) {
     this.round  = function ()   { return this.map( Math.round ) };
     this.ceil   = function ()   { return this.map( Math.ceil ) };
     this.fract  = function ()   { return this.map( function (x) { return x - Math.floor(x); } )};
+
+    this.copy   = function ()   { return new Vector(this); };
 }
