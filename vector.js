@@ -7,6 +7,11 @@ function Vector(comp) {
         this.comp = [].slice.call(arguments);
     }
 
+    this.toString = function () {
+
+        return "Vector("+this.comp.join(", ")+")";
+    }
+
     this.distance2 = function (other) {
         var sum = 0.0;
         var m = Math.max(this.comp.length, other.comp.length)
