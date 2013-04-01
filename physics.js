@@ -6,13 +6,11 @@ $(document).ready(function () {
 
         this.position = new Vector(position);
         this.velocity = new Vector(velocity);
-
-        this.points = [];
+        this.points = [this.position.comp];
 
         this.update = function (bodies, dt) {
             // F = G * m1 * m2 / r^2;
             // F/m = a
-            this.points.push(this.position.comp);
 
             var accel = new Vector(0,0);
 
@@ -27,6 +25,7 @@ $(document).ready(function () {
 
             this.position.iadd(this.velocity.mul(dt));
             this.velocity.iadd(accel.mul(dt / this.m));
+            this.points.push(this.position.comp);
 
         };
         this.render = function (ctx) {
