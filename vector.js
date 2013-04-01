@@ -1,6 +1,7 @@
-
 function Vector(comp) {
-    if ($.isArray(comp)) {
+    if (comp instanceof Vector) {
+        this.comp = comp.comp;
+    } else if ($.isArray(comp)) {
         this.comp = comp;
     } else {
         this.comp = [].slice.call(arguments);
