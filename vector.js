@@ -123,7 +123,7 @@ function Vector(comp) {
     this.sub    = function (other) { return this.map2( function (x, y) { return x - y; }, other )};
     this.isub   = function (other) { this.comp = this.sub(other).comp; };
     this.mul    = function (other) { return this.map2( function (x, y) { return x * y; }, other )};
-    this.isub   = function (other) { this.comp = this.mul(other).comp; };
+    this.imul   = function (other) { this.comp = this.mul(other).comp; };
     this.div    = function (other) { return this.map2( function (x, y) { return x / y; }, other )};
     this.idiv   = function (other) { this.comp = this.div(other).comp; };
 
