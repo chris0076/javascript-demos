@@ -8,20 +8,23 @@ $(document).ready(function () {
         this.velocity = new Vector(velocity);
         this.points = [this.position.comp];
 
-        this.update = function (bodies, dt) {
-            // F = G * m1 * m2 / r^2;
-            // F/m = a
-
+        this.accelerate = function (bodies, dt) {
             var accel = new Vector(0,0);
-
             for (var i=0; i<bodies.length;i++) {
                 body = bodies[i];
-
-                var dp = body.position.sub(this.position);
+                pos = new Vector(body.points.slice(-1)[0]);
+                var dp = pos.sub(this.position);
                 var mag2 = dp.magnitude2();
                 var temp = 500*body.m*this.m/mag2;
                 accel.iadd(dp.mul(temp));
             }
+            return accel;
+        };
+        this.update = function (bodies, dt) {
+            // F = G * m1 * m2 / r^2;
+            // F/m = a
+
+            var accel = accelerate(bodies, dt);
 
             this.position.iadd(this.velocity.mul(dt));
             this.velocity.iadd(accel.mul(dt / this.m));
