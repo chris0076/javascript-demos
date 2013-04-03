@@ -38,11 +38,14 @@ function test() {
     var c = new Vector([.231, 4.24, 6.99]);
     var d = new Vector([-2, -5]);
 
+    var e = new Vector([0, 0, 0]);
+
     console.log("init");
     isEqualA(a.comp, [1, 2, 3]);
     isEqualA(b.comp, [2, 3]);
     isEqualA(c.comp, [.231, 4.24, 6.99]);
     isEqualA(d.comp, [-2, -5]);
+    isEqualA(e.comp, [0, 0, 0]);
 
     console.log("add");
     isEqualA(a.add(b).comp, [3, 5, 3]);
@@ -54,6 +57,22 @@ function test() {
     isEqualA(c.add(b).comp, [2.231, 7.24, 6.99]);
     isEqualA(c.add(d).comp, [-1.769, -0.76, 6.99]);
     isEqualA(d.add(c).comp, [-1.769, -0.76, 6.99]);
+
+    console.log("iadd");
+    isEqualA(e.iadd(new Vector(1,1,1)).comp, [1, 1, 1]);
+    isEqualA(e.iadd(new Vector(1,1,1)).comp, [2, 2, 2]);
+
+    console.log("isub");
+    isEqualA(e.isub(new Vector(1,1,1)).comp, [1, 1, 1]);
+    isEqualA(e.isub(new Vector(2,2,2)).comp, [-1, -1, -1]);
+
+    console.log("imul");
+    isEqualA(e.imul(new Vector(10,5,2)).comp, [-10, -5, -2]);
+    isEqualA(e.imul(new Vector(-1,-1,-1)).comp, [10, 5, 2]);
+
+    console.log("idiv");
+    isEqualA(e.idiv(new Vector(2,5,1)).comp, [5, 1, 2]);
+    isEqualA(e.idiv(new Vector(5,1,2)).comp, [1, 1, 1]);
 
     console.log("sub");
     isEqualA(a.sub(b).comp, [-1,-1, 3]);

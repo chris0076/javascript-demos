@@ -125,13 +125,13 @@ function Vector(comp) {
     };
 
     this.add    = function (other) { return this.map2( function (x, y) { return x + y; }, other )};
-    this.iadd   = function (other) { this.comp = this.add(other).comp; };
+    this.iadd   = function (other) { this.comp = this.add(other).comp; return this; };
     this.sub    = function (other) { return this.map2( function (x, y) { return x - y; }, other )};
-    this.isub   = function (other) { this.comp = this.sub(other).comp; };
+    this.isub   = function (other) { this.comp = this.sub(other).comp; return this; };
     this.mul    = function (other) { return this.map2( function (x, y) { return x * y; }, other )};
-    this.imul   = function (other) { this.comp = this.mul(other).comp; };
+    this.imul   = function (other) { this.comp = this.mul(other).comp; return this; };
     this.div    = function (other) { return this.map2( function (x, y) { return x / y; }, other )};
-    this.idiv   = function (other) { this.comp = this.div(other).comp; };
+    this.idiv   = function (other) { this.comp = this.div(other).comp; return this; };
 
     this.negate = function ()   { return this.map( function (x) { return -x; }) };
     this.abs    = function ()   { return this.map( Math.abs ); };
