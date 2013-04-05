@@ -271,7 +271,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    function make_buddhabrot(id, iterations) {
+    function makeBuddhabrot(id, iterations) {
         var canvas = document.getElementById(id);
         var ctx = canvas.getContext("2d");
         var imageData = ctx.createImageData(canvas.width, canvas.height);
@@ -292,9 +292,9 @@ $(document).ready(function () {
         return imageData;
     }
 
-    bluedata = make_buddhabrot("buddhabrot_blue", 50);
-    greendata = make_buddhabrot("buddhabrot_green", 500);
-    reddata = make_buddhabrot("buddhabrot_red", 5000);
+    bluedata = makeBuddhabrot("buddhabrot_blue", 50);
+    greendata = makeBuddhabrot("buddhabrot_green", 500);
+    reddata = makeBuddhabrot("buddhabrot_red", 5000);
 
 
     var canvas = document.getElementById("nebulabrot");
