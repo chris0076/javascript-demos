@@ -39,6 +39,8 @@ function test() {
     var d = new Vector([-2, -5]);
 
     var e = new Vector([0, 0, 0]);
+    var f = new Vector([1,2,3]);
+    var g = new Vector([1,2,0]);
 
     console.log("init");
     isEqualA(a.comp, [1, 2, 3]);
@@ -74,6 +76,7 @@ function test() {
     isEqualA(e.idiv(new Vector(2,5,1)).comp, [5, 1, 2]);
     isEqualA(e.idiv(new Vector(5,1,2)).comp, [1, 1, 1]);
 
+
     console.log("sub");
     isEqualA(a.sub(b).comp, [-1,-1, 3]);
     isEqualA(a.sub(c).comp, [0.769, -2.24, -3.99]);
@@ -106,6 +109,62 @@ function test() {
     isEqualA(c.div(b).comp, [0.1155, 1.4133333333333333, Infinity]);
     isEqualA(c.div(d).comp, [-0.1155, -0.848000000000, Infinity]);
     isEqualA(d.div(c).comp, [-8.658008658008658, -1.1792452830188678, 0]);
+
+    console.log("eq");
+    isEqualA(a.eq(a).comp, [true, true, true]);
+    isEqualA(a.eq(b).comp, [false, false, false]);
+    isEqualA(a.eq(c).comp, [false, false, false]);
+    isEqualA(a.eq(f).comp, [true, true, true]);
+    isEqualA(a.eq(g).comp, [true, true, false]);
+
+    console.log("ne");
+    isEqualA(a.ne(a).comp, [false, false, false]);
+    isEqualA(a.ne(b).comp, [true, true, true]);
+    isEqualA(a.ne(c).comp, [true, true, true]);
+    isEqualA(a.ne(f).comp, [false, false, false]);
+    isEqualA(a.ne(g).comp, [false, false, true]);
+
+    console.log("lt");
+    isEqualA(a.lt(a).comp, [false, false, false]);
+    isEqualA(a.lt(b).comp, [true, true, false]);
+    isEqualA(a.lt(c).comp, [false, true, true]);
+    isEqualA(a.lt(f).comp, [false, false, false]);
+    isEqualA(a.lt(g).comp, [false, false, false]);
+
+    console.log("gt");
+    isEqualA(a.gt(a).comp, [false, false, false]);
+    isEqualA(a.gt(b).comp, [false, false, true]);
+    isEqualA(a.gt(c).comp, [true, false, false]);
+    isEqualA(a.gt(f).comp, [false, false, false]);
+    isEqualA(a.gt(g).comp, [false, false, true]);
+
+    console.log("le");
+    isEqualA(a.le(a).comp, [true, true, true]);
+    isEqualA(a.le(b).comp, [true, true, false]);
+    isEqualA(a.le(c).comp, [false, true, true]);
+    isEqualA(a.le(f).comp, [true, true, true]);
+    isEqualA(a.le(g).comp, [true, true, false]);
+
+    console.log("ge");
+    isEqualA(a.ge(a).comp, [true, true, true]);
+    isEqualA(a.ge(b).comp, [false, false, true]);
+    isEqualA(a.ge(c).comp, [true, false, false]);
+    isEqualA(a.ge(f).comp, [true, true, true]);
+    isEqualA(a.ge(g).comp, [true, true, true]);
+
+    console.log("all");
+    isEqual(a.eq(a).all(), true);
+    isEqual(a.eq(b).all(), false);
+    isEqual(a.eq(c).all(), false);
+    isEqual(a.eq(f).all(), true);
+    isEqual(a.eq(g).all(), false);
+
+    console.log("any");
+    isEqual(a.eq(a).any(), true);
+    isEqual(a.eq(b).any(), false);
+    isEqual(a.eq(c).any(), false);
+    isEqual(a.eq(f).any(), true);
+    isEqual(a.eq(g).any(), true);
 
     console.log("neg");
     isEqualA(a.negate().comp, [-1, -2, -3]);

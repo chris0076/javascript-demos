@@ -133,6 +133,27 @@ function Vector(comp) {
     this.div    = function (other) { return this.map2( function (x, y) { return x / y; }, other )};
     this.idiv   = function (other) { this.comp = this.div(other).comp; return this; };
 
+    this.eq     = function (other) { return this.map2( function (x, y) { return x === y; }, other )};
+    this.ne     = function (other) { return this.map2( function (x, y) { return x !== y; }, other )};
+    this.lt     = function (other) { return this.map2( function (x, y) { return x < y; }, other )};
+    this.gt     = function (other) { return this.map2( function (x, y) { return x > y; }, other )};
+    this.le     = function (other) { return this.map2( function (x, y) { return x <= y; }, other )};
+    this.ge     = function (other) { return this.map2( function (x, y) { return x >= y; }, other )};
+
+    this.all    = function () {
+        for (var i = 0; i < this.comp.length; i++) {
+            if (!this.comp[i]) return false;
+        }
+        return true;
+    }
+
+    this.any    = function () {
+        for (var i = 0; i < this.comp.length; i++) {
+            if (this.comp[i]) return true;
+        }
+        return false;
+    }
+
     this.negate = function ()   { return this.map( function (x) { return -x; }) };
     this.abs    = function ()   { return this.map( Math.abs ); };
     this.pow    = function (n)  { return this.map( function (x) { return Math.pow(x, n); } )};
