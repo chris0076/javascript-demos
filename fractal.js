@@ -20,8 +20,9 @@ $(document).ready(function () {
     $(canvas).click(function (e) {
         var p = getPos(e, canvas);
         ctx.clearRect(0, 0 , canvas.width, canvas.height);
-        points.push(p);
-
+        if (points.length < 3) {
+            points.push(p);
+        }
         ctx.fillStyle = "#00FF00";
         for (var i = 0; i < points.length; i++) {
             ctx.beginPath();
@@ -48,4 +49,3 @@ $(document).ready(function () {
     });
 
 });
-
