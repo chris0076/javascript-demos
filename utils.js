@@ -41,3 +41,21 @@ function writeString(canvas, string) {
     ctx.fillText(string, canvas.width/2 - ctx.measureText(string).width/2, canvas.height/2);
     ctx.restore();
 }
+
+Array.prototype.contains = function (object) {
+    for (var i=0; i < this.length; i++) {
+        if (this[i] === object) {
+            return true;
+        }
+    }
+    return false;
+}
+
+Array.prototype.remove = function (object) {
+    for (var i=0; i < this.length; i++) {
+        if (this[i] === object) {
+            return this.splice(i, 1);
+        }
+    }
+    return false;
+}
