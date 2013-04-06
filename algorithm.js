@@ -149,6 +149,7 @@ $(document).ready(function () {
     function renderAll(ctx) {
         ctx.save();
         ctx.clearRect(0,0,canvas.width,canvas.height);
+        tree.render(ctx);
         for (var i = 0; i < points.length; i++) {
             ctx.beginPath();
             if (selection && selection.contains(points[i].coord)) {
@@ -159,7 +160,6 @@ $(document).ready(function () {
             ctx.arc(points[i].coord.x(), points[i].coord.y(), 1, 0, 2 * Math.PI);
             ctx.fill();
         }
-        tree.render(ctx);
         if (dragging) {
             ctx.save();
             ctx.strokeStyle = "#FFFFFF";
