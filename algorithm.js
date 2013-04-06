@@ -149,9 +149,13 @@ $(document).ready(function () {
     function renderAll(ctx) {
         ctx.save();
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = "#00FF00";
         for (var i = 0; i < points.length; i++) {
             ctx.beginPath();
+            if (selection && selection.contains(points[i].coord)) {
+                ctx.fillStyle = "#00FF00";
+            } else {
+                ctx.fillStyle = "#FF0000";
+            }
             ctx.arc(points[i].coord.x(), points[i].coord.y(), 1, 0, 2 * Math.PI);
             ctx.fill();
         }
