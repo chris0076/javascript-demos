@@ -37,7 +37,10 @@ $(document).ready(function () {
         this.points = [];
         this.parent = parent;
         this.children = null;
-        this.depth = 10;
+        var log2 = Math.log(2);
+        var min = Math.min(this.bounds.radius.x(), this.bounds.radius.y());
+
+        this.depth = Math.floor(Math.log(min)/log2) + 1;
 
         this.addPoint = function (point) {
             if (!this.bounds.contains(point.coord)) {
