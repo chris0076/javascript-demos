@@ -12,6 +12,19 @@ function Vector(comp) {
         return "Vector("+this.comp.join(", ")+")";
     }
 
+    this.getset = function (idx, val) {
+        if (val) {
+            this.comp[idx] = val;
+        } else {
+            return this.comp[idx];
+        }
+    }
+
+    this.x = function (val) { return this.getset(0, val); }
+    this.y = function (val) { return this.getset(1, val); }
+    this.z = function (val) { return this.getset(2, val); }
+
+
     this.distance2 = function (other) {
         var sum = 0.0;
         var m = Math.max(this.comp.length, other.comp.length)

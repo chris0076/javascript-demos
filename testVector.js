@@ -49,6 +49,24 @@ function test() {
     isEqualA(d.comp, [-2, -5]);
     isEqualA(e.comp, [0, 0, 0]);
 
+    console.log("get x y z");
+    isEqual(a.x(), 1);
+    isEqual(b.x(), 2);
+    isEqual(c.y(), 4.24);
+    isEqual(d.z(), null);
+    isEqual(e.z(), 0);
+
+    console.log("set x y z");
+    isEqual(a.x(2), null);
+    isEqual(a.x(), 2);
+    isEqual(a.x(1), null);
+    isEqual(a.y(3), null);
+    isEqual(a.y(), 3);
+    isEqual(a.y(2), null);
+    isEqual(a.z(2), null);
+    isEqual(a.z(), 2);
+    isEqual(a.z(3), null);
+
     console.log("add");
     isEqualA(a.add(b).comp, [3, 5, 3]);
     isEqualA(a.add(c).comp, [1.231, 6.24, 9.99]);
