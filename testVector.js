@@ -1,10 +1,10 @@
 function isEqualA(a, b) {
-    var x = (a.length == b.length);
+    var x = (a.length === b.length);
     var y = true;
 
-    var m = Math.max(a.length, b.length)
+    var m = Math.max(a.length, b.length);
     for (var i = 0; i < m; i++) {
-        if (Math.abs(a[i] - b[i]) > .00001) {
+        if (Math.abs(a[i] - b[i]) > 0.00001) {
             console.log(a[i] - b[i]);
             y = false;
             break;
@@ -16,17 +16,17 @@ function isEqualA(a, b) {
             "x":x,
             "y":y,
             "a":a,
-            "b":b,
+            "b":b
         });
         console.log('');
     }
 }
 
 function isEqual(a, b) {
-    if (Math.abs(a - b) > .00001) {
+    if (Math.abs(a - b) > 0.00001) {
         console.log({
             "a":a,
-            "b":b,
+            "b":b
         });
         console.log('');
     }
@@ -35,7 +35,7 @@ function isEqual(a, b) {
 function test() {
     var a = new Vector(1,2,3);
     var b = new Vector([2,3]);
-    var c = new Vector([.231, 4.24, 6.99]);
+    var c = new Vector([0.231, 4.24, 6.99]);
     var d = new Vector([-2, -5]);
 
     var e = new Vector([0, 0, 0]);
@@ -45,7 +45,7 @@ function test() {
     console.log("init");
     isEqualA(a.comp, [1, 2, 3]);
     isEqualA(b.comp, [2, 3]);
-    isEqualA(c.comp, [.231, 4.24, 6.99]);
+    isEqualA(c.comp, [0.231, 4.24, 6.99]);
     isEqualA(d.comp, [-2, -5]);
     isEqualA(e.comp, [0, 0, 0]);
 
@@ -118,12 +118,12 @@ function test() {
     isEqualA(d.mul(c).comp, [-0.462, -21.2, 0.0]);
 
     console.log("div");
-    isEqualA(a.div(b).comp, [.5, .6666666666, Infinity]);
+    isEqualA(a.div(b).comp, [0.5, 0.6666666666, Infinity]);
     isEqualA(a.div(c).comp, [4.329004329, 0.471698113208, 0.429184549356]);
-    isEqualA(a.div(d).comp, [-.5, -.4, Infinity]);
+    isEqualA(a.div(d).comp, [-0.5, -0.4, Infinity]);
     isEqualA(b.div(a).comp, [2, 1.5, 0]);
     isEqualA(b.div(c).comp, [8.65800865801, 0.707547169811, 0.0]);
-    isEqualA(b.div(d).comp, [-1, -.6]);
+    isEqualA(b.div(d).comp, [-1, -0.6]);
     isEqualA(c.div(b).comp, [0.1155, 1.4133333333333333, Infinity]);
     isEqualA(c.div(d).comp, [-0.1155, -0.848000000000, Infinity]);
     isEqualA(d.div(c).comp, [-8.658008658008658, -1.1792452830188678, 0]);
@@ -187,13 +187,13 @@ function test() {
     console.log("neg");
     isEqualA(a.negate().comp, [-1, -2, -3]);
     isEqualA(b.negate().comp, [-2, -3]);
-    isEqualA(c.negate().comp, [-.231, -4.24, -6.99]);
+    isEqualA(c.negate().comp, [-0.231, -4.24, -6.99]);
     isEqualA(d.negate().comp, [2, 5]);
 
     console.log("abs");
     isEqualA(a.abs().comp, [1, 2, 3]);
     isEqualA(b.abs().comp, [2, 3]);
-    isEqualA(c.abs().comp, [.231, 4.24, 6.99]);
+    isEqualA(c.abs().comp, [0.231, 4.24, 6.99]);
     isEqualA(d.abs().comp, [2, 5]);
 
     console.log("pow");
@@ -223,7 +223,7 @@ function test() {
     console.log("fract");
     isEqualA(a.fract().comp, [0, 0, 0]);
     isEqualA(b.fract().comp, [0, 0]);
-    isEqualA(c.fract().comp, [.231, .24, .99]);
+    isEqualA(c.fract().comp, [0.231, 0.24, 0.99]);
     isEqualA(d.fract().comp, [0, 0]);
 
 
@@ -315,7 +315,7 @@ function test() {
     console.log("rotate3d");
     isEqualA(a.rotate3d(2, 2, 2).comp, [5.38651145198, 1.57457492138, -1.14656535343]);
     isEqualA(b.rotate3d(-1, 0, 0).comp, [1.08060461174, 3.0, 1.68294196962]);
-    isEqualA(c.rotate3d(21, .4, 2).comp, [-2.00875908598, 5.54666432695, -4.62404120913]);
+    isEqualA(c.rotate3d(21, 0.4, 2).comp, [-2.00875908598, 5.54666432695, -4.62404120913]);
     isEqualA(d.rotate3d(-3, 5, 6).comp, [1.69388198219, -1.72600122488, -5.02887919974]);
 }
 test();

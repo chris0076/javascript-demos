@@ -1,4 +1,5 @@
 function Vector(comp) {
+    'use strict';
     if (comp instanceof Vector) {
         this.comp = comp.comp;
     } else if ($.isArray(comp)) {
@@ -9,8 +10,8 @@ function Vector(comp) {
 
     this.toString = function () {
 
-        return "Vector("+this.comp.join(", ")+")";
-    }
+        return "Vector(" + this.comp.join(", ") + ")";
+    };
 
     this.getset = function (idx, val) {
         if (val) {
@@ -18,16 +19,16 @@ function Vector(comp) {
         } else {
             return this.comp[idx];
         }
-    }
+    };
 
-    this.x = function (val) { return this.getset(0, val); }
-    this.y = function (val) { return this.getset(1, val); }
-    this.z = function (val) { return this.getset(2, val); }
+    this.x = function (val) { return this.getset(0, val); };
+    this.y = function (val) { return this.getset(1, val); };
+    this.z = function (val) { return this.getset(2, val); };
 
 
     this.distance2 = function (other) {
         var sum = 0.0;
-        var m = Math.max(this.comp.length, other.comp.length)
+        var m = Math.max(this.comp.length, other.comp.length);
         for (var i = 0; i < m; i++) {
             sum += Math.pow(this.comp[i] - other.comp[i], 2);
         }
@@ -40,7 +41,7 @@ function Vector(comp) {
 
     this.dot = function (other) {
         var sum = 0.0;
-        var m = Math.max(this.comp.length, other.comp.length)
+        var m = Math.max(this.comp.length, other.comp.length);
         for (var i = 0; i < m; i++) {
             var x = this.comp[i]*other.comp[i];
             sum += isNaN(x) ? 0 : x;
@@ -109,7 +110,7 @@ function Vector(comp) {
     };
 
     this.map = function (f) {
-        var temp = []
+        var temp = [];
         for (var i = 0; i < this.comp.length; i++) {
             temp.push(f(this.comp[i]));
         }
@@ -119,61 +120,67 @@ function Vector(comp) {
     this.map2 = function (f, other) {
         var single = false;
         var temp = [];
+        var m;
         try {
-            var m = Math.max(this.comp.length, other.comp.length);
+            m = Math.max(this.comp.length, other.comp.length);
         } catch  (err) {
             single = true;
-            var m = this.comp.length;
+            m = this.comp.length;
         }
+        var x, y;
         for (var i = 0; i < m; i++) {
-            var x = this.comp[i] ? this.comp[i] : 0;
+            x = this.comp[i] ? this.comp[i] : 0;
             if (single) {
                 y = other;
             } else {
-                var y = other.comp[i] ? other.comp[i] : 0;
+                y = other.comp[i] ? other.comp[i] : 0;
             }
             temp.push(f(x, y));
         }
         return new Vector(temp);
     };
 
-    this.add    = function (other) { return this.map2( function (x, y) { return x + y; }, other )};
+    this.add    = function (other) { return this.map2( function (x, y) { return x + y; }, other ); };
     this.iadd   = function (other) { this.comp = this.add(other).comp; return this; };
-    this.sub    = function (other) { return this.map2( function (x, y) { return x - y; }, other )};
+    this.sub    = function (other) { return this.map2( function (x, y) { return x - y; }, other ); };
     this.isub   = function (other) { this.comp = this.sub(other).comp; return this; };
-    this.mul    = function (other) { return this.map2( function (x, y) { return x * y; }, other )};
+    this.mul    = function (other) { return this.map2( function (x, y) { return x * y; }, other ); };
     this.imul   = function (other) { this.comp = this.mul(other).comp; return this; };
-    this.div    = function (other) { return this.map2( function (x, y) { return x / y; }, other )};
+    this.div    = function (other) { return this.map2( function (x, y) { return x / y; }, other ); };
     this.idiv   = function (other) { this.comp = this.div(other).comp; return this; };
 
-    this.eq     = function (other) { return this.map2( function (x, y) { return x === y; }, other )};
-    this.ne     = function (other) { return this.map2( function (x, y) { return x !== y; }, other )};
-    this.lt     = function (other) { return this.map2( function (x, y) { return x < y; }, other )};
-    this.gt     = function (other) { return this.map2( function (x, y) { return x > y; }, other )};
-    this.le     = function (other) { return this.map2( function (x, y) { return x <= y; }, other )};
-    this.ge     = function (other) { return this.map2( function (x, y) { return x >= y; }, other )};
+    this.eq     = function (other) { return this.map2( function (x, y) { return x === y; }, other ); };
+    this.ne     = function (other) { return this.map2( function (x, y) { return x !== y; }, other ); };
+    this.lt     = function (other) { return this.map2( function (x, y) { return x < y; }, other ); };
+    this.gt     = function (other) { return this.map2( function (x, y) { return x > y; }, other ); };
+    this.le     = function (other) { return this.map2( function (x, y) { return x <= y; }, other ); };
+    this.ge     = function (other) { return this.map2( function (x, y) { return x >= y; }, other ); };
 
     this.all    = function () {
         for (var i = 0; i < this.comp.length; i++) {
-            if (!this.comp[i]) return false;
+            if (!this.comp[i]) {
+                return false;
+            }
         }
         return true;
-    }
+    };
 
     this.any    = function () {
         for (var i = 0; i < this.comp.length; i++) {
-            if (this.comp[i]) return true;
+            if (this.comp[i]) {
+                return true;
+            }
         }
         return false;
-    }
+    };
 
-    this.negate = function ()   { return this.map( function (x) { return -x; }) };
+    this.negate = function ()   { return this.map( function (x) { return -x; }); };
     this.abs    = function ()   { return this.map( Math.abs ); };
-    this.pow    = function (n)  { return this.map( function (x) { return Math.pow(x, n); } )};
-    this.floor  = function ()   { return this.map( Math.floor ) };
-    this.round  = function ()   { return this.map( Math.round ) };
-    this.ceil   = function ()   { return this.map( Math.ceil ) };
-    this.fract  = function ()   { return this.map( function (x) { return x - Math.floor(x); } )};
+    this.pow    = function (n)  { return this.map( function (x) { return Math.pow(x, n); } ); };
+    this.floor  = function ()   { return this.map( Math.floor ); };
+    this.round  = function ()   { return this.map( Math.round ); };
+    this.ceil   = function ()   { return this.map( Math.ceil ); };
+    this.fract  = function ()   { return this.map( function (x) { return x - Math.floor(x); } ); };
 
     this.copy   = function ()   { return new Vector(this); };
 }
