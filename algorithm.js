@@ -275,4 +275,19 @@ $(document).ready(function () {
             renderAll(ctx);
         }
     });
+
+    $(canvas).keydown(function (e) {
+        if (e.keyCode == 65 && selection) {
+            quads = tree.query(selection);
+            for (var i=0; i<quads.length; i++) {
+                for (var j=0; j<quads[i].points.length; j++) {
+                    var p = quads[i].points[j];
+                    if (selection.contains(p.coord)) {
+                        p.quad.removePoint(p);
+                    }
+                }
+            }
+            renderAll(ctx);
+        }
+    });
 });
