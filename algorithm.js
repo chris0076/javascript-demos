@@ -134,7 +134,6 @@ $(document).ready(function () {
     };
 
 
-
     var points = [];
     var canvas = document.getElementById("quadtree");
     var ctx = canvas.getContext("2d");
@@ -143,20 +142,29 @@ $(document).ready(function () {
     bounds = new BoundingBox(a, a.copy());
     tree = new Quadtree(bounds);
 
-    $(canvas).click(function (e) {
+    function renderAll(ctx) {
+        ctx.save();
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        var p = getPos(e, canvas);
-        points.push(new Point([p.x, p.y]));
-        console.log(points);
-
         ctx.fillStyle = "#00FF00";
         for (var i = 0; i < points.length; i++) {
             ctx.beginPath();
             ctx.arc(points[i].coord.x(), points[i].coord.y(), 1, 0, 2 * Math.PI);
             ctx.fill();
         }
-        tree.addPoint(points[points.length-1]);
         tree.render(ctx);
+        if (dragging) {
+            ctx.save();
+            ctx.strokeStyle = "#FFFFFF";
+            selection.render(ctx);
+            ctx.restore();
+        }
+        ctx.restore();
+    }
+
+    $(canvas).click(function (e) {
+        var p = getPos(e, canvas);
+        points.push(new Point([p.x, p.y]));
+        tree.addPoint(points[points.length-1]);
     });
 
 });
