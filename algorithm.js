@@ -119,9 +119,25 @@ $(document).ready(function () {
 
         // };
 
-        // this.query = function () {
+        this.query = function (box) {
+            var quads = [];
+            if (this.bounds.intersects(box)) {
+                if (this.children) {
+                    for (var i=0; i<this.children.length; i++) {
+                        var a = this.children[i].query(box);
+                        if (a.length) {
+                            quads.push.apply(quads, a);
+                        }
+                    }
+                } else {
+                    if (this.points.length) {
+                        quads.push(this);
+                    }
+                }
+            }
+            return quads;
+        };
 
-        // };
         this.render = function (ctx) {
             if (this.children != null) {
                 for (var i=0; i<4; i++) {
