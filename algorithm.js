@@ -134,6 +134,10 @@ $(document).ready(function () {
     };
 
 
+    var dragging = false;
+    var selection = null;
+    var startpos = null;
+
     var points = [];
     var canvas = document.getElementById("quadtree");
     var ctx = canvas.getContext("2d");
@@ -161,10 +165,34 @@ $(document).ready(function () {
         ctx.restore();
     }
 
-    $(canvas).click(function (e) {
-        var p = getPos(e, canvas);
-        points.push(new Point([p.x, p.y]));
-        tree.addPoint(points[points.length-1]);
+    $(canvas).mousedown(function(e) {
+        dragging = true;
+        startpos = getPos(e, canvas);
+        selection = new BoundingBox([startpos.x, startpos.y], [0, 0]);
     });
 
+    $(document).mousemove(function (e) {
+        if (dragging) {
+            var p = getPos(e, canvas);
+            selection.update([p.x, p.y]);
+            renderAll(ctx);
+        }
+    });
+
+    $(canvas).mouseup(function(e) {
+        var p = getPos(e, canvas);
+        if (startpos.x == p.x && startpos.y == p.y) {
+            var p = getPos(e, canvas);
+            points.push(new Point([p.x, p.y]));
+            tree.addPoint(points[points.length-1]);
+        }
+        dragging = false;
+        renderAll(ctx);
+    });
+    $(document).mouseup(function() {
+        if (dragging) {
+            dragging = false;
+            renderAll(ctx);
+        }
+    });
 });
