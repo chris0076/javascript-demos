@@ -22,7 +22,7 @@ $(document).ready(function () {
         };
 
         this.render = function (ctx) {
-            ctx.strokeRect(this.minval.comp[0], this.minval.comp[1], this.radius.mul(2).comp[0], this.radius.mul(2).comp[1]);
+            ctx.strokeRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y());
         };
     };
 
@@ -76,8 +76,7 @@ $(document).ready(function () {
         this.subdivide = function () {
             if ((this.depth - 1) > 0) {
                 var half = (this.bounds.radius.div(2));
-                console.log(half)
-                var ihalf = new Vector(half.comp[0], -half.comp[1]);
+                var ihalf = new Vector(half.x(), -half.y());
                 var nw = this.bounds.center.sub(half);
                 var ne = this.bounds.center.add(ihalf);
                 var sw = this.bounds.center.sub(ihalf);
@@ -135,7 +134,7 @@ $(document).ready(function () {
         ctx.fillStyle = "#00FF00";
         for (var i = 0; i < points.length; i++) {
             ctx.beginPath();
-            ctx.arc(points[i].coord.comp[0], points[i].coord.comp[1], 1, 0, 2 * Math.PI);
+            ctx.arc(points[i].coord.x(), points[i].coord.y(), 1, 0, 2 * Math.PI);
             ctx.fill();
         }
         tree.addPoint(points[points.length-1]);
