@@ -1,9 +1,11 @@
 $(document).ready(function () {
     function BoundingBox(center, radius) {
-        this.center = center; // vec
-        this.radius = radius; // vec
+        this.center = new Vector(center); // vec
+        this.radius = new Vector(radius); // vec
+
         this.minval = this.center.sub(this.radius);
         this.maxval = this.center.add(this.radius);
+        this.start = this.center.copy();
 
         // this.update = function (coord) {
         //     this
