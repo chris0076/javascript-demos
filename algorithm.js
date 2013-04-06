@@ -84,11 +84,72 @@ $(document).ready(function () {
             return this.addPoint(new Point(coord));
         };
 
-        // this.removePoint = function (point) {
-        //     if (!this.points.length) {
-        //         if (this.points.contains(point))
-        //     }
-        // };
+        this.removePoint = function (point) {
+            return this.removeCoord(point.coord);
+        }
+
+        this.removeCoord = function (coord) {
+            if (!this.bounds.contains(coord)) {
+                return False;
+            }
+            if (this.points.length) {
+                for (var i=0; i<this.points.length; i++) {
+                    var point = this.points[i];
+                    if (point.coord.eq(coord)) {
+                        points.remove(point);
+                        this.points.remove(point);
+                        this.merge();
+                        return true;
+                    }
+                }
+            }
+            if (this.children) {
+                for (var i=0; i<this.children.length; i++) {
+                    if (this.children[i].removeCoord(coord)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+
+        this._merge = function () {
+            if (!this.children) {
+                return true;
+            }
+            var points = [];
+            for (var i=0; i<this.children.length; i++) {
+                var quad = this.children[i];
+                // children must be reduced
+                if (quad.children) return false;
+                if (quad.points.length) {
+                    points.push.apply(points, quad.points);
+                }
+            }
+            // max amount of points is 1 when not the base
+            if (points.length > 1) {
+                return false;
+            } else if (points.length === 1) {
+                this.points = points;
+                this.points[0].quad = this;
+                for (var i=0; i<this.children.length; i++) {
+                    // this.children[i].delete();
+                }
+                this.children = null;
+            } else {
+                this.points = [];
+            }
+            return true;
+        }
+
+        this.merge = function () {
+            var parent = this.parent;
+            var good = true;
+            while (parent && good) {
+                good = parent._merge();
+                parent = parent.parent;
+            }
+        };
 
         this.subdivide = function () {
             if ((this.depth - 1) > 0) {
@@ -114,10 +175,6 @@ $(document).ready(function () {
             }
             return true;
         };
-
-        // this._merge = function () {
-
-        // };
 
         this.query = function (box) {
             var quads = [];
