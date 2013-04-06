@@ -7,9 +7,23 @@ $(document).ready(function () {
         this.maxval = this.center.add(this.radius);
         this.start = this.center.copy();
 
-        // this.update = function (coord) {
-        //     this
-        // };
+        this.update = function (coord) {
+            var val = new Vector(coord);
+            // console.log(this.minval.comp)
+            if (val.x() > this.start.x()) {
+                this.maxval.x(val.x());
+            } else {
+                this.minval.x(val.x());
+            }
+
+            if (val.y() > this.start.y()) {
+                this.maxval.y(val.y());
+            } else {
+                this.minval.y(val.y());
+            }
+            this.radius = this.maxval.sub(this.minval).div(2);
+            this.center = this.radius.add(this.minval);
+        };
 
         this.contains = function (coord) {
             return (this.minval.le(coord).all() && this.maxval.gt(coord).all());
