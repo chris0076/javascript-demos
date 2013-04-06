@@ -6,10 +6,10 @@ $(document).ready(function () {
         this.minval = this.center.sub(this.radius);
         this.maxval = this.center.add(this.radius);
         this.start = this.center.copy();
+        this.style = "RGBA(0,0,0,0)";
 
         this.update = function (coord) {
             var val = new Vector(coord);
-            // console.log(this.minval.comp)
             if (val.x() > this.start.x()) {
                 this.maxval.x(val.x());
             } else {
@@ -36,14 +36,17 @@ $(document).ready(function () {
         };
 
         this.render = function (ctx) {
+            ctx.save();
+            ctx.fillStyle = this.style;
+            ctx.fillRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y())
             ctx.strokeRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y());
+            ctx.restore();
         };
     };
 
     function Point(coord) {
         this.coord = new Vector(coord);
         this.quad = null;
-
     };
 
     function Quadtree(bounds, parent) {
@@ -255,7 +258,14 @@ $(document).ready(function () {
             p.y = Math.max(Math.min(canvas.height, p.y), 0);
 
             selection.update([p.x, p.y]);
+            var a = tree.query(selection);
+            for (var i=0; i<a.length;i++) {
+                a[i].bounds.style = "RGBA(150,150,150,20)";
+            }
             renderAll(ctx);
+            for (var i=0; i<a.length;i++) {
+                a[i].bounds.style = "RGBA(0,0,0,0)";
+            }
         }
     });
 
