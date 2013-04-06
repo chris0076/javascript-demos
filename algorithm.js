@@ -125,8 +125,9 @@ $(document).ready(function () {
     var canvas = document.getElementById("quadtree");
     var ctx = canvas.getContext("2d");
     writeString(canvas, "CLICK HERE");
-    bounds = new BoundingBox(new Vector(canvas.width/2, canvas.height/2), new Vector(canvas.width/2, canvas.height/2));
-    tree = new Quadtree(bounds)
+    var a = new Vector(canvas.width/2, canvas.height/2);
+    bounds = new BoundingBox(a, a.copy());
+    tree = new Quadtree(bounds);
 
     $(canvas).click(function (e) {
         ctx.clearRect(0,0,canvas.width,canvas.height);
