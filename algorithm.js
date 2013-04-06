@@ -51,8 +51,7 @@ $(document).ready(function () {
                     return true;
                 }
                 if ((this.depth - 1) <= 0) {
-                    console.log('problemo');
-                    this.points.append(point);
+                    this.points.push(point);
                     point.quad = this;
                     return true;
                 }
