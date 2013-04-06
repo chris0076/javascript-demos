@@ -194,6 +194,9 @@ $(document).ready(function () {
     $(document).mousemove(function (e) {
         if (dragging) {
             var p = getPos(e, canvas);
+            p.x = Math.max(Math.min(canvas.width, p.x), 0);
+            p.y = Math.max(Math.min(canvas.height, p.y), 0);
+
             selection.update([p.x, p.y]);
             renderAll(ctx);
         }
