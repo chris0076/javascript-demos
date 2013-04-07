@@ -99,7 +99,6 @@ $(document).ready(function () {
                 for (var i=0; i<this.points.length; i++) {
                     var point = this.points[i];
                     if (point.coord.eq(coord)) {
-                        points.remove(point);
                         this.points.remove(point);
                         this.merge();
                         return true;
@@ -288,14 +287,20 @@ $(document).ready(function () {
 
     $(canvas).keydown(function (e) {
         if (e.keyCode == 65 && selection) {
-            quads = tree.query(selection);
+            var quads = tree.query(selection);
+            var staging = [];
             for (var i=0; i<quads.length; i++) {
                 for (var j=0; j<quads[i].points.length; j++) {
                     var p = quads[i].points[j];
                     if (selection.contains(p.coord)) {
-                        p.quad.removePoint(p);
+                        staging.push(p);
                     }
                 }
+            }
+            // separate so that points are not skipped when deleting
+            for (var i=0; i<staging.length;i++) {
+                staging[i].quad.removePoint(staging[i])
+                points.remove(staging[i])
             }
             renderAll(ctx);
         }
