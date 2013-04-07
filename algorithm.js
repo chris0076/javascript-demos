@@ -47,6 +47,19 @@ $(document).ready(function () {
     function Point(coord) {
         this.coord = new Vector(coord);
         this.quad = null;
+
+        this.render = function (ctx) {
+            ctx.save();
+            ctx.beginPath();
+            if (selection.contains(this.coord)) {
+                ctx.strokeStyle = "#00FF00";
+            } else {
+                ctx.strokeStyle = "#FF0000";
+            }
+            ctx.arc(this.coord.x(), this.coord.y(), 1, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.restore();
+        };
     };
 
     function Quadtree(bounds, parent) {
@@ -221,19 +234,12 @@ $(document).ready(function () {
     bounds = new BoundingBox(a, a.copy());
     tree = new Quadtree(bounds);
 
-    function renderAll(ctx) {
+   function renderAll(ctx) {
         ctx.save();
         ctx.clearRect(0,0,canvas.width,canvas.height);
         tree.render(ctx);
         for (var i = 0; i < points.length; i++) {
-            ctx.beginPath();
-            if (selection && selection.contains(points[i].coord)) {
-                ctx.fillStyle = "#00FF00";
-            } else {
-                ctx.fillStyle = "#FF0000";
-            }
-            ctx.arc(points[i].coord.x(), points[i].coord.y(), 1, 0, 2 * Math.PI);
-            ctx.fill();
+            points[i].render(ctx);
         }
         if (dragging) {
             ctx.save();
