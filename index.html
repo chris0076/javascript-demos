@@ -29,21 +29,38 @@
                         <div class="canvas-container">
                             <canvas id="quadtree" width="500" height="500" tabindex="1"></canvas>
                         </div>
+                        This is a method of doing quick lookups of points in a 2D grid. This implementation could be optimized by only rerendering the affected parts of the quadtree.
+                        <p>
+                        Click to create points, click and drag to select them. The points can then be removed by pressing <code>A</code>.
                     </div>
                 </div>
 
 
                 <div class="content">
-                    <div class="title">Euler Integration</div>
+                    <div class="title">Numerical Integration</div>
                     <div class="text">
                         <div class="canvas-container">
                             <canvas id="euler" width="500" height="500" tabindex="1"></canvas>
                         </div>
                         $$ \frac {\vec F}{m} = \frac{d^2 \vec r}{dt^2} $$
                         $$ \vec F = - G \frac{m_1 m_2}{| \vec r_1- \vec r_2|^2} $$
-                        This is just a basic demo of Euler integration applied to a planetary orbit simulation. When you mouseover the canvas, the simulation will run.
+                        This is just a basic demo of Numerical integration applied to a planetary orbit simulation modeled by the equations listed above. When you mouseover the canvas, the simulation will run.
                         <p>
-                        The bright green path is basic Euler integration, the dark green path is Symplectic Euler, and the white is Verlet Integration.
+                        Listed below are the methods of integration.
+                        <p>
+                        Euler
+                        $$ p_{n+1} = p_n + v_n \Delta t $$
+                        $$ v_{n+1} = v_n + a_n \Delta t $$
+
+                        Symplectic Euler
+                        $$ v_{n+1} = v_n + a_n \Delta t $$
+                        $$ p_{n+1} = p_n + v_n \Delta t $$
+
+                        Verlet
+                        $$ p_{n+1} = 2 p_n - p_{n-1} + a_n \Delta t^2 $$
+                        The bright green path is basic Euler integration, the dark green path is Symplectic Euler (it takes about 20 seconds to see it diverge from the verlet), and the white is Verlet Integration.
+                        <p>
+                        All three of these methods start with the same initial parameters so you can see how much they vary with results (especially the regular Euler).
                     </div>
                 </div>
 
