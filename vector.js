@@ -81,6 +81,13 @@ function Vector(comp) {
         return Math.atan2(this.comp[1], this.comp[0]);
     };
 
+    this.setAngle = function (theta) {
+        var ct = Math.cos(theta);
+        var st = Math.sin(theta);
+        this.comp = new Vector(ct, st).mul(this.magnitude()).comp;
+        return this;
+    }
+
     this.rotate2d = function (theta) {
         var ct = Math.cos(theta);
         var st = Math.sin(theta);
@@ -89,6 +96,11 @@ function Vector(comp) {
         var c0 = ct*x - st*y;
         var c1 = st*x + ct*y;
         return new Vector([c0, c1]);
+    };
+
+    this.irotate2d = function (theta) {
+        this.comp = this.rotate2d(theta).comp
+        return this;
     };
 
     this.rotate3d = function (theta, phi, psi) {
