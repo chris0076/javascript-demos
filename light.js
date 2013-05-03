@@ -83,7 +83,7 @@ function LineSeg(start, end) {
 }
 
 
-function propogateRay(ray, objects) {
+function propogateRay(ray, objects, maxbounces) {
     points = [];
     do {
         var dist = Infinity;
@@ -100,8 +100,8 @@ function propogateRay(ray, objects) {
         if (dist < Infinity) {
             ray = ray.reflect(objects[idx], dist);
         }
-    } while (dist > 0 && dist != Infinity && points.length < 100);
-    if (points.length < 100) {
+    } while (dist > 0 && dist != Infinity && points.length < maxbounces + 2);
+    if (points.length < maxbounces + 2) {
         points.push(ray.start.add(ray.direction.mul(1000)).comp);
     }
     return points;
@@ -131,21 +131,27 @@ $(document).ready(function () {
     writeString(canvas, "Hover");
     ctx.fillStyle = "#222222";
 
+    var maxbounces = 50;
+    maxbounceelement = $("#maxbounces");
+    maxbounceelement.focusout(function () { maxbounces = parseInt(maxbounceelement.val()); });
+    maxbounceelement.keydown(function (e) {
+        if (e.which == 13) maxbounces = parseInt(maxbounceelement.val());
+    });
+
     var lines = [
         new LineSeg(new Vector(400, 100), new Vector(100, 100)),
         new LineSeg(new Vector(100, 100), new Vector(100, 400)),
         new LineSeg(new Vector(100, 400), new Vector(400, 400)),
         new Circle(new Vector(400, 200), 50),
         new Circle(new Vector(100, 300), 50),
-        // new Circle(new Vector(220, 250), 50),
     ];
-    var center = new Vector(canvas.width/2, canvas.height/2);
 
+    var center = new Vector(canvas.width/2, canvas.height/2);
     $(canvas).mousemove(function (e) {
         var p = getPos(e, canvas);
         var pvec = new Vector(p.x, p.y);
         var ray = new Ray(center, pvec.sub(center));
-        var points = propogateRay(ray, lines);
+        var points = propogateRay(ray, lines, maxbounces);
 
         ctx.fillRect(0,0,canvas.width, canvas.height);
         ctx.beginPath();
