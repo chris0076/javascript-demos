@@ -8,7 +8,7 @@ function Circle(center, radius) {
         var a = ray.direction.dot(ray.direction);
         var b = 2*f.dot(ray.direction);
         var c = f.dot(f) - this.radius * this.radius;
-        var discriminant = b*b - 4*a*c
+        var discriminant = b*b - 4*a*c;
         if (discriminant < 0) {
             return Infinity;
         }
@@ -24,8 +24,8 @@ function Circle(center, radius) {
     };
 
     this.normal = function (coord) {
-        return coord.sub(this.center).normalized()
-    }
+        return coord.sub(this.center).normalized();
+    };
 
     this.render = function (ctx) {
         ctx.save();
@@ -43,14 +43,14 @@ function LineSeg(start, end) {
     this.end = end;
     this.length = function () {
         return this.start.distance(this.end);
-    }
+    };
     this.direction = function () {
         return this.end.sub(this.start).normalized();
-    }
+    };
 
     this.normal = function (coord) {
         return this.direction().rotate2d(Math.PI/2);
-    }
+    };
 
     this.intersect = function (ray) {
         var m0 = ray.direction;
@@ -69,7 +69,7 @@ function LineSeg(start, end) {
             return Infinity;
         }
         return x0-0.005; // FLOOOOOAAAATTTTSSS!
-    }
+    };
 
     this.render = function (ctx) {
         ctx.save();
@@ -79,16 +79,18 @@ function LineSeg(start, end) {
         ctx.lineTo(this.end.x(), this.end.y());
         ctx.stroke();
         ctx.restore();
-    }
+    };
 }
 
 
 function propogateRay(ray, objects, maxbounces) {
-    points = [];
+    var points = [];
+    var dist;
+    var idx;
+    var temp;
     do {
-        var dist = Infinity;
-        var idx = 0;
-        var temp;
+        dist = Infinity;
+        idx = 0;
         points.push(ray.start.comp);
         for (var i = 0; i < objects.length; i++) {
             temp = objects[i].intersect(ray);
@@ -114,14 +116,14 @@ function Ray(start, direction) {
 
     this.end = function (length) {
         return this.start.add(this.direction.mul(length));
-    }
+    };
 
     this.reflect = function (other, t) {
         var intersection = this.start.add(this.direction.mul(t));
         var temp = other.normal(intersection);
         var dir = this.direction.sub(temp.mul(2).mul(temp.dot(this.direction)));
         return new Ray(intersection, dir);
-    }
+    };
 }
 
 
@@ -132,11 +134,15 @@ $(document).ready(function () {
     ctx.fillStyle = "#222222";
 
     var maxbounces = 50;
-    maxbounceelement = $("#maxbounces");
+    var maxbounceelement = $("#maxbounces");
     maxbounceelement.focusout(function () { maxbounces = parseInt(maxbounceelement.val()); });
     maxbounceelement.keydown(function (e) {
         if (e.which == 13) maxbounces = parseInt(maxbounceelement.val());
     });
+
+    var drawtype = 'line';
+    var drawtypeelement = $("input[name=drawtype]");
+    drawtypeelement.click(function () { drawtype = $('input[name=drawtype]:checked').val(); });
 
     var lines = [
         new LineSeg(new Vector(400, 100), new Vector(100, 100)),
@@ -165,7 +171,6 @@ $(document).ready(function () {
         for (var i=0; i < lines.length; i++) {
             lines[i].render(ctx);
         }
-
     });
 
     var start = null;
@@ -173,7 +178,14 @@ $(document).ready(function () {
         var p = getPos(e, canvas);
         var pvec = new Vector(p.x, p.y);
         if (start) {
-            lines.push(new LineSeg(start, pvec));
+            switch (drawtype) {
+                case "line":
+                    lines.push(new LineSeg(start, pvec));
+                    break;
+                case "circle":
+                    lines.push(new Circle(start, start.sub(pvec).magnitude()));
+                    break;
+            }
             lines[lines.length-1].render(ctx);
             start = null;
         } else {
