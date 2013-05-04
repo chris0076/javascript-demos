@@ -109,7 +109,6 @@ function propogateRay(ray, objects, maxbounces) {
     return points;
 }
 
-
 function Ray(start, direction) {
     this.start = new Vector(start);
     this.direction = new Vector(direction).normalized();
@@ -126,6 +125,111 @@ function Ray(start, direction) {
     };
 }
 
+
+function drawLine(image, array, start, end, intensity) {
+    var x0 = start[0]|0;
+    var y0 = start[1]|0;
+    var x1 = end[0]|0;
+    var y1 = end[1]|0;
+    var dx = Math.abs(x1-x0)|0;
+    var dy = Math.abs(y1-y0)|0;
+    if (dx == 0 && dy == 0) return intensity;
+    if (x0 < x1) {
+        var sx = 1;
+    } else {
+        var sx = -1;
+    }
+    if (y0 < y1) {
+        var sy = 1;
+    } else {
+        var sy = -1;
+    }
+
+    var length = dx*dx + dy*dy;
+    var err = dx - dy;
+    var pdx = 0;
+    var pdy = 0;
+    while (true) {
+        if (pdx || pdy) {
+            var temp = (1/(pdx*pdx+pdy*pdy) * intensity);
+        } else {
+            var temp = intensity;
+        }
+        array[image.width*y0 + x0] += temp;
+        if (temp < 1) break;
+        if ((x0 == x1) && (y0 == y1)) break;
+        var e2 = 2*err;
+        if (e2 > -dy) {
+            err -= dy;
+            x0 += sx;
+            pdx += sx;
+        }
+        if (e2 < dx) {
+            err += dx;
+            y0 += sy;
+            pdy += sy;
+        }
+    }
+    return 1/(dx*dx+dy*dy)*intensity;
+}
+
+function sampleLight (image, array, samples, objects, maxbounces) {
+    for (var i = 0; i < samples; i++) {
+        var intensity = 100000;
+        var angle = Math.random()*2*Math.PI;
+        var ray = new Ray(new Vector(image.width/2, image.height/2), new Vector(Math.cos(angle), Math.sin(angle)));
+
+        var points = propogateRay(ray, objects, maxbounces);
+        for (var j = 1; j < points.length; j++) {
+            intensity = drawLine(image, array, points[j-1], points[j], intensity)
+            if (intensity < 1) break;
+            if (intensity == Infinity)
+                console.log("???");
+        }
+    }
+}
+
+function drawIt(image, array) {
+    var min = Infinity;
+    var max = 0;
+
+    for (var i=0; i < array.length; i++) {
+        var val = array[i];
+        setPixelVal(image, i, null, val);
+    }
+}
+
+
+$(document).ready(function () {
+    var canvas = document.getElementById("light2");
+    var ctx = canvas.getContext("2d");
+    var imageData = ctx.createImageData(canvas.width, canvas.height);
+    writeString(canvas, "Hover");
+
+    var lines = [
+        new LineSeg(new Vector(400, 100), new Vector(100, 100)),
+        new LineSeg(new Vector(100, 100), new Vector(100, 400)),
+        new LineSeg(new Vector(100, 400), new Vector(400, 400)),
+        new Circle(new Vector(400, 200), 50),
+        new Circle(new Vector(100, 300), 50),
+    ];
+
+    var array = []
+    for (var i = 0; i < canvas.width*canvas.height; i++) {
+        array.push(0);
+    }
+
+    var maxbounces = 50;
+    $(canvas).hover(function (e) {
+        iid = setInterval(function() { sampleLight(imageData, array, 100, lines, maxbounces);}, 1)},
+        function() { (iid && clearInterval(iid)); }
+    );
+
+    $(canvas).click(function (e) {
+        drawIt(imageData, array);
+        ctx.putImageData(imageData, 0, 0);
+    });
+});
 
 $(document).ready(function () {
     var canvas = document.getElementById("light");
