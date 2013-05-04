@@ -51,9 +51,11 @@ function Vector(comp) {
 
     this.cross = function (other) {
         var temp = [];
-        temp.push(this.comp[1] * other.comp[2] - this.comp[2] * other.comp[1]);
-        temp.push(this.comp[2] * other.comp[0] - this.comp[0] * other.comp[2]);
-        temp.push(this.comp[0] * other.comp[1] - this.comp[1] * other.comp[0]);
+        var a = this.comp;
+        var b = other.comp;
+        temp.push(a[1] * b[2] - a[2] * b[1]);
+        temp.push(a[2] * b[0] - a[0] * b[2]);
+        temp.push(a[0] * b[1] - a[1] * b[0]);
         return new Vector(temp);
     };
 
