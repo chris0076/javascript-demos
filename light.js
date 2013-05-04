@@ -53,15 +53,15 @@ function LineSeg(start, end) {
         var m0 = ray.direction;
         var m1 = this.direction;
 
-        var temp = m0.cross(m1).z();
+        var temp = m0.cross2d(m1);
         if (Math.abs(temp) - 0.00005 < 0) {
             return Infinity;
         }
-        var x0 = m1.cross(ray.start.sub(this.start)).z()/temp;
+        var x0 = m1.cross2d(ray.start.sub(this.start))/temp;
         if (x0 < 0) {
             return -Infinity;
         }
-        var x1 = m0.cross(this.start.sub(ray.start)).z()/-temp/this.length;
+        var x1 = m0.cross2d(this.start.sub(ray.start))/-temp/this.length;
         if (x1 < 0 || x1 > 1) {
             return Infinity;
         }

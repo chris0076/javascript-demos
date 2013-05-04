@@ -59,6 +59,12 @@ function Vector(comp) {
         return new Vector(temp);
     };
 
+    this.cross2d = function (other) {
+        var a = this.comp;
+        var b = other.comp;
+        return a[0] * b[1] - a[1] * b[0];
+    }
+
     this.magnitude2 = function () {
         return this.dot(this);
     };
