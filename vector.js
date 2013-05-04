@@ -141,12 +141,14 @@ function Vector(comp) {
         var single = false;
         var temp = [];
         var m;
-        try {
+        if (other.comp) {
             m = Math.max(this.comp.length, other.comp.length);
-        } catch  (err) {
+        }
+        else {
             single = true;
             m = this.comp.length;
         }
+
         var x, y;
         for (var i = 0; i < m; i++) {
             x = this.comp[i] ? this.comp[i] : 0;
