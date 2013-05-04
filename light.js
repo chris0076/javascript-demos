@@ -132,31 +132,33 @@ function drawLine(image, array, start, end, intensity) {
     var y1 = end[1]|0;
     var dx = Math.abs(x1-x0)|0;
     var dy = Math.abs(y1-y0)|0;
-    if (dx == 0 && dy == 0) return intensity;
+    if (dx === 0 && dy === 0) return intensity;
+    var sx;
+    var sy;
     if (x0 < x1) {
-        var sx = 1;
+        sx = 1;
     } else {
-        var sx = -1;
+        sx = -1;
     }
     if (y0 < y1) {
-        var sy = 1;
+        sy = 1;
     } else {
-        var sy = -1;
+        sy = -1;
     }
 
     var length = dx*dx + dy*dy;
     var err = dx - dy;
     var pdx = 0;
     var pdy = 0;
+    var temp;
+    var temp = intensity;
     while (true) {
         if (pdx || pdy) {
-            var temp = (1/(pdx*pdx+pdy*pdy) * intensity);
-        } else {
-            var temp = intensity;
+            temp = (1/(pdx*pdx+pdy*pdy) * intensity);
         }
         array[image.width*y0 + x0] += temp;
         if (temp < 1) break;
-        if ((x0 == x1) && (y0 == y1)) break;
+        if ((x0 === x1) && (y0 === y1)) break;
         var e2 = 2*err;
         if (e2 > -dy) {
             err -= dy;
@@ -182,7 +184,7 @@ function sampleLight (image, array, samples, objects, maxbounces) {
         for (var j = 1; j < points.length; j++) {
             intensity = drawLine(image, array, points[j-1], points[j], intensity)
             if (intensity < 1) break;
-            if (intensity == Infinity)
+            if (intensity === Infinity)
                 console.log("???");
         }
     }
@@ -240,7 +242,7 @@ $(document).ready(function () {
     var maxbounceelement = $("#maxbounces");
     maxbounceelement.focusout(function () { maxbounces = parseInt(maxbounceelement.val()); });
     maxbounceelement.keydown(function (e) {
-        if (e.which == 13) maxbounces = parseInt(maxbounceelement.val());
+        if (e.which === 13) maxbounces = parseInt(maxbounceelement.val());
     });
 
     var drawtype = 'line';
