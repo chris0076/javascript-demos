@@ -101,7 +101,7 @@ function propogateRay(ray, objects, maxbounces, intensity) {
             ray = ray.reflect(objects[idx], dist);
         }
     } while (dist > 0 && dist != Infinity && points.length < maxbounces + 2 && intensity > 1);
-    if (points.length < maxbounces + 2) {
+    if (points.length < maxbounces + 2 && intensity > 1) {
         points.push(ray.start.add(ray.direction.mul(1000)).comp);
     }
     return points;
