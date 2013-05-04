@@ -54,15 +54,15 @@ function LineSeg(start, end) {
         var m0 = ray.direction;
         var m1 = this.direction;
 
-        var temp = m0.cross(m1);
-        if (Math.abs(temp.z()) - 0.00005 < 0) {
+        var temp = m0.cross(m1).z();
+        if (Math.abs(temp) - 0.00005 < 0) {
             return Infinity;
         }
-        var x0 = m1.cross(ray.start.sub(this.start)).div(temp).z();
+        var x0 = m1.cross(ray.start.sub(this.start)).z()/temp;
         if (x0 < 0) {
             return -Infinity;
         }
-        var x1 = m0.cross(this.start.sub(ray.start)).div(temp.negate()).z()/this.length();
+        var x1 = m0.cross(this.start.sub(ray.start))/-temp/this.length();
         if (x1 < 0 || x1 > 1) {
             return Infinity;
         }
