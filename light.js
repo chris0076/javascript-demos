@@ -155,8 +155,10 @@ function drawLine(image, array, start, end, intensity) {
         if (pdx || pdy) {
             temp = (1/(pdx*pdx+pdy*pdy) * intensity);
         }
+
         array[image.width*y0 + x0] += temp;
         if (temp < 1) break;
+        if ((x0 < 0) || y0 < 0 || x0 > image.width || y0 > image.height) break;
         if ((x0 === x1) && (y0 === y1)) break;
         var e2 = 2*err;
         if (e2 > -dy) {
