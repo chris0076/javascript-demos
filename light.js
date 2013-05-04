@@ -83,7 +83,7 @@ function LineSeg(start, end) {
 }
 
 
-function propogateRay(ray, objects, maxbounces) {
+function propogateRay(ray, objects, maxbounces, intensity) {
     var points = [];
     var dist;
     var idx;
@@ -100,9 +100,10 @@ function propogateRay(ray, objects, maxbounces) {
             }
         }
         if (dist < Infinity) {
+            intensity = 1/(dist*dist)*intensity;
             ray = ray.reflect(objects[idx], dist);
         }
-    } while (dist > 0 && dist != Infinity && points.length < maxbounces + 2);
+    } while (dist > 0 && dist != Infinity && points.length < maxbounces + 2 && intensity > 1);
     if (points.length < maxbounces + 2) {
         points.push(ray.start.add(ray.direction.mul(1000)).comp);
     }
@@ -179,7 +180,7 @@ function sampleLight (image, array, samples, objects, maxbounces) {
         var angle = Math.random()*2*Math.PI;
         var ray = new Ray(new Vector(image.width/2, image.height/2), new Vector(Math.cos(angle), Math.sin(angle)));
 
-        var points = propogateRay(ray, objects, maxbounces);
+        var points = propogateRay(ray, objects, maxbounces, intensity);
         for (var j = 1; j < points.length; j++) {
             intensity = drawLine(image, array, points[j-1], points[j], intensity)
             if (intensity < 1) break;
@@ -261,7 +262,7 @@ $(document).ready(function () {
         var p = getPos(e, canvas);
         var pvec = new Vector(p.x, p.y);
         var ray = new Ray(center, pvec.sub(center));
-        var points = propogateRay(ray, lines, maxbounces);
+        var points = propogateRay(ray, lines, maxbounces, Infinity);
 
         ctx.fillRect(0,0,canvas.width, canvas.height);
         ctx.beginPath();
