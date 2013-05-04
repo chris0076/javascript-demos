@@ -42,12 +42,11 @@ function LineSeg(start, end) {
     this.start = start;
     this.end = end;
     this.direction = this.end.sub(this.start).normalized(); // assume lines can not move
-    this.length = function () {
-        return this.start.distance(this.end);
-    };
+    this.length = this.start.distance(this.end);            // assume lines can not move
+    this.n = this.direction.rotate2d(Math.PI/2);            // assume lines can not move
 
     this.normal = function (coord) {
-        return this.direction.rotate2d(Math.PI/2);
+        return this.n;
     };
 
     this.intersect = function (ray) {
@@ -62,7 +61,7 @@ function LineSeg(start, end) {
         if (x0 < 0) {
             return -Infinity;
         }
-        var x1 = m0.cross(this.start.sub(ray.start))/-temp/this.length();
+        var x1 = m0.cross(this.start.sub(ray.start)).z()/-temp/this.length;
         if (x1 < 0 || x1 > 1) {
             return Infinity;
         }
