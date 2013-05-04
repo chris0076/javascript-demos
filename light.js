@@ -41,20 +41,18 @@ function Circle(center, radius) {
 function LineSeg(start, end) {
     this.start = start;
     this.end = end;
+    this.direction = this.end.sub(this.start).normalized(); // assume lines can not move
     this.length = function () {
         return this.start.distance(this.end);
     };
-    this.direction = function () {
-        return this.end.sub(this.start).normalized();
-    };
 
     this.normal = function (coord) {
-        return this.direction().rotate2d(Math.PI/2);
+        return this.direction.rotate2d(Math.PI/2);
     };
 
     this.intersect = function (ray) {
         var m0 = ray.direction;
-        var m1 = this.direction();
+        var m1 = this.direction;
 
         var temp = m0.cross(m1);
         if (Math.abs(temp.z()) - 0.00005 < 0) {
