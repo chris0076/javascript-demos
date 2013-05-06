@@ -100,7 +100,7 @@ function propogateRay(ray, objects, maxbounces, intensity) {
             intensity = 1/(dist)*intensity;
             ray = ray.reflect(objects[idx], dist);
         }
-    } while (dist > 0 && dist != Infinity && points.length < maxbounces + 2 && intensity > 1);
+    } while (dist > 0 && dist != Infinity && points.length < maxbounces + 2 && intensity > .01);
     if (points.length < maxbounces + 2 && intensity > 1) {
         points.push(ray.start.add(ray.direction.mul(1000)).comp);
     }
@@ -158,7 +158,7 @@ function drawLine(image, array, start, end, intensity) {
 
         if ((x0 < 0) || y0 < 0 || x0 >= image.width || y0 >= image.height) break;
         array[image.width*y0 + x0] += temp;
-        if (temp < 1) break;
+        if (temp < .01) break;
         if ((x0 === x1) && (y0 === y1)) break;
         var e2 = 2*err;
         if (e2 > -dy) {
@@ -184,7 +184,7 @@ function sampleLight (image, array, samples, objects, maxbounces) {
         var points = propogateRay(ray, objects, maxbounces, intensity);
         for (var j = 1; j < points.length; j++) {
             intensity = drawLine(image, array, points[j-1], points[j], intensity)
-            if (intensity < 1) break;
+            if (intensity < .01) break;
             if (intensity === Infinity)
                 console.log("???");
         }
@@ -217,6 +217,7 @@ $(document).ready(function () {
     ];
 
     var array = []
+
     for (var i = 0; i < canvas.width*canvas.height; i++) {
         array.push(0);
     }
