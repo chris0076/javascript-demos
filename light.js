@@ -196,7 +196,7 @@ function drawIt(image, array) {
     var max = 0;
 
     for (var i=0; i < array.length; i++) {
-        var val = array[i];
+        var val = Math.pow(array[i], 1.0 / 2.2);
         setPixelVal(image, i, null, val);
     }
 }
