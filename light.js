@@ -221,15 +221,39 @@ $(document).ready(function () {
         array.push(0);
     }
 
+    var totalrays = 0;
+    var totalrayselement = $("#totalrays");
+    totalrayselement.text(totalrays);
     var maxbounces = 50;
-    $(canvas).hover(function (e) {
-        iid = setInterval(function() { sampleLight(imageData, array, 100, lines, maxbounces);}, 1)},
-        function() { (iid && clearInterval(iid)); }
+    var totaltime = 0;
+    var start = null;
+    var rayspersecondelement = $("#rayspersecond");
+    rayspersecondelement.text(0);
+    $(canvas).hover(
+        function (e) {
+            start = new Date().getTime();
+            iid = setInterval(
+                function() {
+                    sampleLight(imageData, array, 100, lines, maxbounces);
+                    totalrays += 100;
+                },
+                0);
+        },
+        function() {
+            (iid && clearInterval(iid));
+            totaltime += new Date().getTime() - start;
+            start = null;
+        }
     );
 
     $(canvas).click(function (e) {
         drawIt(imageData, array);
         ctx.putImageData(imageData, 0, 0);
+        totalrayselement.text(totalrays);
+        totaltime += new Date().getTime() - start;
+        start = new Date().getTime();
+        rayspersecondelement.text(totalrays/totaltime*1000);
+
     });
 });
 
