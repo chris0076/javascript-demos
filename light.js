@@ -97,7 +97,7 @@ function propogateRay(ray, objects, maxbounces, intensity) {
             }
         }
         if (dist < Infinity) {
-            intensity = 1/(dist*dist)*intensity;
+            intensity = 1/(dist)*intensity;
             ray = ray.reflect(objects[idx], dist);
         }
     } while (dist > 0 && dist != Infinity && points.length < maxbounces + 2 && intensity > 1);
@@ -153,7 +153,7 @@ function drawLine(image, array, start, end, intensity) {
     var temp = intensity;
     while (true) {
         if (pdx || pdy) {
-            temp = (1/(pdx*pdx+pdy*pdy) * intensity);
+            temp = (1/(Math.abs(pdx)+Math.abs(pdy)) * intensity);
         }
 
         if ((x0 < 0) || y0 < 0 || x0 > image.width || y0 > image.height) break;
@@ -172,7 +172,7 @@ function drawLine(image, array, start, end, intensity) {
             pdy += sy;
         }
     }
-    return 1/(dx*dx+dy*dy)*intensity;
+    return 1/(Math.abs(pdx)+Math.abs(pdy))*intensity;
 }
 
 function sampleLight (image, array, samples, objects, maxbounces) {
