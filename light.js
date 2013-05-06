@@ -53,10 +53,10 @@ function LineSeg(start, end) {
         var m0 = ray.direction;
         var m1 = this.direction;
         var temp = m0.cross2d(m1);
-        var temp2 = ray.start.sub(this.start)
         if (Math.abs(temp) - 0.00005 < 0) {
             return Infinity;
         }
+        var temp2 = ray.start.sub(this.start);
         var x0 = m1.cross2d(temp2)/temp;
         if (x0 < 0) {
             return -Infinity;
@@ -192,9 +192,6 @@ function sampleLight (image, array, samples, objects, maxbounces) {
 }
 
 function drawIt(image, array) {
-    var min = Infinity;
-    var max = 0;
-
     for (var i=0; i < array.length; i++) {
         var val = Math.pow(array[i], 1.0 / 2.2);
         setPixelVal(image, i, null, val);
@@ -253,7 +250,7 @@ $(document).ready(function () {
         totalrayselement.text(totalrays);
         totaltime += new Date().getTime() - start;
         start = new Date().getTime();
-        rayspersecondelement.text(totalrays/totaltime*1000);
+        rayspersecondelement.text(Math.floor(totalrays/totaltime*1000));
 
     });
 });
