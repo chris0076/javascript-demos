@@ -52,16 +52,16 @@ function LineSeg(start, end) {
     this.intersect = function (ray) {
         var m0 = ray.direction;
         var m1 = this.direction;
-
         var temp = m0.cross2d(m1);
+        var temp2 = ray.start.sub(this.start)
         if (Math.abs(temp) - 0.00005 < 0) {
             return Infinity;
         }
-        var x0 = m1.cross2d(ray.start.sub(this.start))/temp;
+        var x0 = m1.cross2d(temp2)/temp;
         if (x0 < 0) {
             return -Infinity;
         }
-        var x1 = m0.cross2d(this.start.sub(ray.start))/-temp/this.length;
+        var x1 = m0.cross2d(temp2.negate())/-temp/this.length;
         if (x1 < 0 || x1 > 1) {
             return Infinity;
         }
