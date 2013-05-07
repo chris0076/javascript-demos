@@ -183,7 +183,7 @@ function sampleLight (image, array, samples, objects, maxbounces) {
 
         var points = propogateRay(ray, objects, maxbounces, intensity);
         for (var j = 1; j < points.length; j++) {
-            intensity = drawLine(image, array, points[j-1], points[j], intensity)
+            intensity = drawLine(image, array, points[j-1], points[j], intensity);
             if (intensity < .01) break;
             if (intensity === Infinity)
                 console.log("???");
