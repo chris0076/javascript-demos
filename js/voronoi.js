@@ -69,12 +69,10 @@ $(document).ready(function () {
     var points = [];
     var canvas = document.getElementById("voronoi");
     var ctx = canvas.getContext("2d");
+    writeString(canvas, "CLICK HERE");
     var imageData = ctx.createImageData(canvas.width, canvas.height);
     var scale = 1 / 64;
     var dist = euclidean2;
-
-    drawVoronoi(imageData, points, scale, null, dist);
-    ctx.putImageData(imageData, 0, 0);
 
     $(canvas).click(function () {
         drawVoronoi(imageData, points, scale, null, dist);

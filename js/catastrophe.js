@@ -191,6 +191,7 @@ $(document).ready(function () {
 
     var canvas = document.getElementById("catastrophe");
     var ctx = canvas.getContext("2d");
+    writeString(canvas, "CLICK HERE");
 
     // set coord system
     ctx.translate(canvas.width/2, canvas.height/2);
@@ -209,16 +210,18 @@ $(document).ready(function () {
 
     var objects = [topPoint, disk, diskPoint, bottomPoint, bond, bond2];
 
+
     var dragging = false;
-
-    renderAll(ctx);
-
+    var data = false;
     $(canvas).mousedown(function(e) {
         var temp = getLocalPos(e, canvas);
         if (bottomPoint.pos.distance2(temp) <= 9) {
             dragging = true;
         }
-
+        if (!data) {
+            renderAll(ctx);
+            data = true;
+        }
     });
 
     $(document).mousemove(function (e) {

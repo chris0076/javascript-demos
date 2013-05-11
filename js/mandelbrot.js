@@ -160,6 +160,7 @@ $(document).ready(function () {
     var points = [];
     var canvas = document.getElementById("mandelbrot");
     var ctx = canvas.getContext("2d");
+    writeString(canvas, "CLICK HERE");
     var imageData = ctx.createImageData(canvas.width, canvas.height);
     var centerx = $("#centerx");
     var centery = $("#centery");
@@ -191,8 +192,6 @@ $(document).ready(function () {
         drawMandelbrot(imageData, 255, 10, frame);
         ctx.putImageData(imageData, 0, 0);
     }
-
-    render(imageData, frame);
 
     $(canvas).mousedown(function (e) {
         switch (e.button) {
@@ -228,9 +227,6 @@ $(document).ready(function () {
     var ctx = canvas.getContext("2d");
     var imageData = ctx.createImageData(canvas.width, canvas.height);
 
-    drawMandelbrot(imageData, 100, 0);
-    ctx.putImageData(imageData, 0, 0);
-
     $(canvas).mousemove(function (e) {
         drawMandelbrot(imageData, Math.floor(getPos(e, canvas).x/4), 0);
         ctx.putImageData(imageData, 0, 0);
@@ -244,9 +240,6 @@ $(document).ready(function () {
     var imageData = ctx.createImageData(canvas.width, canvas.height);
 
     var iterations = 5;
-    drawMandelbrot(imageData, 255, 10);
-    ctx.putImageData(imageData, 0, 0);
-
     $(canvas).mousemove(function (e) {
         drawMandelbrot(imageData, 255, Math.floor(getPos(e, canvas).x/4), 0);
         ctx.putImageData(imageData, 0, 0);
@@ -259,10 +252,13 @@ $(document).ready(function () {
     var ctx = canvas.getContext("2d");
     var imageData = ctx.createImageData(canvas.width, canvas.height);
     var iterations = 255
-    drawMandelbrot(imageData, iterations, 0);
-    ctx.putImageData(imageData, 0, 0);
 
+    var data = false;
     $(canvas).mousemove(function (e) {
+        if (!data) {
+            drawMandelbrot(imageData, 100, 0);
+            data = true;
+        }
         ctx.putImageData(imageData, 0, 0);
         var p = getPos(e, canvas);
         drawMandelbrotPath(imageData, ctx, iterations, p.x, p.y);
