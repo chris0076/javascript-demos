@@ -65,7 +65,7 @@ function LineSeg(start, end) {
         if (x1 < 0 || x1 > 1) {
             return Infinity;
         }
-        return x0-0.005; // FLOOOOOAAAATTTTSSS!
+        return x0-0.05; // FLOOOOOAAAATTTTSSS!
     };
 
     this.render = function (ctx) {
