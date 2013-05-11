@@ -50,8 +50,10 @@ $(document).ready(function () {
             ctx.lineWidth = 1;
             ctx.strokeStyle = this.color;
             ctx.beginPath();
-            ctx.moveTo(this.points[0][0], this.points[0][1]);
-            for (var i=1; i<this.points.length; i++) {
+            var start = this.points.length-255 < 0 ? 0 : this.points.length-255;
+            ctx.moveTo(this.points[start][0], this.points[start][1]);
+            for (var i=start; i<this.points.length; i++) {
+
                 ctx.lineTo(this.points[i][0], this.points[i][1]);
             }
             ctx.stroke();
@@ -67,17 +69,44 @@ $(document).ready(function () {
     var canvas = document.getElementById("euler");
     var ctx = canvas.getContext("2d");
 
-    var planet = new Planet([canvas.width/4, canvas.height/2], [0, 450],   1, 1, "#00FF66", euler);
-    var sun    = new Planet([canvas.width/2, canvas.height/2], [0,   0], 500, 5, "#FFBB00", euler);
+    var dt = .01;
+    var pos = [canvas.width/4, canvas.height/2];
+    var vel = [70, 600];
+    var posSun = [canvas.width/2, canvas.height/2];
+    var velSun = [0, 0];
+
+    var planet = new Planet(pos, vel,           1, 1, "#00FF66", euler);
+    var sun    = new Planet(posSun, velSun,   750, 5, "#FF6600", euler);
+
+    var planet2 = new Planet(pos, vel,           1, 1, "#007f33", symplecticEuler);
+    var sun2    = new Planet(posSun, velSun,   750, 5, "#7f3300", symplecticEuler);
+
+    var planet3 = new Planet(pos, vel,           1, 1, "#FFFFFF", verlet);
+    planet3.points[0] = planet3.position.sub(planet3.velocity.mul(dt)).comp;
+    var sun3    = new Planet(posSun, velSun,   750, 5, "#401a00", verlet);
+    sun3.points[0] = sun3.position.sub(sun3.velocity.mul(dt)).comp;
 
     $(canvas).hover(function (e) {
         iid = setInterval(function() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            planet.update([sun], .01);
-            sun.update([planet], .01);
+            ctx.fillStyle = "#222222";
+            ctx.fillRect(0,0,canvas.width, canvas.height);
+
+            planet.update([sun], dt);
+            sun.update([planet], dt);
             planet.render(ctx);
             sun.render(ctx);
-        }, 16)},
+
+            planet2.update([sun2], dt);
+            sun2.update([planet2], dt);
+            planet2.render(ctx);
+            sun2.render(ctx);
+
+            planet3.update([sun3], dt);
+            sun3.update([planet3], dt);
+            planet3.render(ctx);
+            sun3.render(ctx);
+
+        }, 10)},
         function() { (iid && clearInterval(iid)); }
     );
 });
