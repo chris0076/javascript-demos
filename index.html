@@ -26,16 +26,6 @@
                 <h1>Javascript Demos</h1>
                 <h5>(These work best with chrome)</h5>
 
-               <div class="content">
-                    <div class="title">Light</div>
-                    <div class="text">
-                        <div class="canvas-container">
-                            <canvas id="light2" width="500" height="500" tabindex="1"></canvas>
-                        </div>
-                        Total Rays: <span id="totalrays"></span> (<span id="rayspersecond"></span> rays/sec)
-                    </div>
-                </div>
-
                 <div class="content">
                     <div class="title">Light</div>
                     <div class="text">
@@ -48,6 +38,22 @@
                         <input type="radio" name="drawtype" id="line" value="line" checked="yes" />
                         <label for="circle">Circle</label>
                         <input type="radio" name="drawtype" id="circle" value="circle" />
+                        <p>
+                        This demo shows how light bounces. The green lines are treated as perfect mirrors.
+                        <p>
+                        By clicking you can add new lines and circles.
+                    </div>
+                </div>
+
+               <div class="content">
+                    <div class="title">2D Raytracer</div>
+                    <div class="text">
+                        <div class="canvas-container">
+                            <canvas id="light2" width="500" height="500" tabindex="1"></canvas>
+                        </div>
+                        Total Rays: <span id="totalrays"></span> (<span id="rayspersecond"></span> rays/sec)
+                        <p>
+                        This is a basic example of a 2D raytracer. The setup is as if you were looking down into a room filled with fog with a light in the middle.
                     </div>
                 </div>
 
