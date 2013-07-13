@@ -263,10 +263,7 @@ $(document).ready(function () {
 
     var maxbounces = 50;
     var maxbounceelement = $("#maxbounces");
-    maxbounceelement.focusout(function () { maxbounces = parseInt(maxbounceelement.val()); });
-    maxbounceelement.keydown(function (e) {
-        if (e.which === 13) maxbounces = parseInt(maxbounceelement.val());
-    });
+    maxbounceelement.change(function () { maxbounces = parseInt(maxbounceelement.val()); });
 
     var drawtype = 'line';
     var drawtypeelement = $("input[name=drawtype]");

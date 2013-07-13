@@ -179,10 +179,7 @@ $(document).ready(function () {
                 render(imageData, frame);
             }
         };
-        element.focusout(function () { fn(element, variable); });
-        element.keydown(function (e) {
-            if (e.which == 13) fn(element, variable);
-        });
+        element.change(function () { fn(element, variable);} );
     };
     binder(centerx, "x");
     binder(centery, "y");
