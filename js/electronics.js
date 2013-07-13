@@ -78,6 +78,8 @@ $(document).ready(function () {
     canvas.onselectstart = function () { return false; };
     canvas.oncontextmenu = function () {return false; };
     var ctx = canvas.getContext("2d");
+
+
     writeString(canvas, "Click");
     ctx.fillStyle = "#222222";
     var gridsize = 10;
@@ -122,4 +124,15 @@ $(document).ready(function () {
         	render(ctx, GRID);
         }
     });
+
+
+    var input = document.getElementById("electronics_input");
+    var img = new Image();
+    $(input).change(function () {
+	    img.src = window.URL.createObjectURL(input.files[0]);
+    });
+    img.onload = function () {
+	    ctx.drawImage(img, 0, 0);
+    }
+
 });
