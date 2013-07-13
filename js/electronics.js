@@ -79,16 +79,27 @@ $(document).ready(function () {
     canvas.oncontextmenu = function () {return false; };
     var ctx = canvas.getContext("2d");
 
-
     writeString(canvas, "Click");
     ctx.fillStyle = "#222222";
-    var gridsize = 10;
+
+    var gridsizeelement = $("#gridsize");
+    var gridsize = gridsize = parseInt(gridsizeelement.val());;
     var gridx = canvas.width/gridsize;
     var gridy = canvas.height/gridsize;
 
 	GRIDS = [new Uint8Array(gridx*gridy), new Uint8Array(gridx*gridy)];
 	GRID = GRIDS[0];
 	var step = 0;
+    gridsizeelement.change(function () { 
+    	gridsize = parseInt(gridsizeelement.val()); 
+	    gridx = canvas.width/gridsize;
+	    gridy = canvas.height/gridsize;
+	    GRIDS = [new Uint8Array(gridx*gridy), new Uint8Array(gridx*gridy)];
+	    GRID = GRIDS[0];
+	    var step = 0;
+	    render(ctx, GRID);
+	    console.log(gridx);
+    });
 
 	var dragging = false;
 	var state = undefined;
