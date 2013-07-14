@@ -96,9 +96,8 @@ $(document).ready(function () {
 	    gridy = canvas.height/gridsize;
 	    GRIDS = [new Uint8Array(gridx*gridy), new Uint8Array(gridx*gridy)];
 	    GRID = GRIDS[0];
-	    var step = 0;
+	    step = 0;
 	    render(ctx, GRID);
-	    console.log(gridx);
     });
 
 	var dragging = false;
@@ -144,6 +143,22 @@ $(document).ready(function () {
     });
     img.onload = function () {
 	    ctx.drawImage(img, 0, 0);
+	    pixels = ctx.getImageData(0,0,canvas.width, canvas.height).data;
+	    for (var i=0; i < gridx; i++) {
+	    	for (var j=0; j < gridy; j++) {
+	    		var pos = (j * gridsize * gridsize * gridx) + (i * gridsize);
+	    		var id = (j * gridx) + i;
+	    		if (pixels[4*pos] == 255 && pixels[4*pos+1] == 136 && pixels[4*pos+2] == 0) {
+		            GRID[id] = WIRE;
+	    		} else if (pixels[4*pos] == 255 && pixels[4*pos+1] == 255 && pixels[4*pos+2] == 255) {
+	    			GRIDS[0][id] = HEAD;
+	    			GRIDS[1][id] = HEAD;
+	    		} else {
+	    			GRIDS[0][id] = BLANK;
+	    			GRIDS[1][id] = BLANK;
+	    		}
+	    	}
+	    }
+	    render(ctx, GRID);
     }
-
 });
