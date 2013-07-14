@@ -63,6 +63,14 @@ $(document).ready(function () {
 		}
 	}
 
+	function stepSimulation(ctx) {
+    	GRID = GRIDS[step % 2];
+    	updateGrid(GRIDS[(step+1) % 2], GRID);
+    	step++;
+    	GRID = GRIDS[step % 2];
+    	render(ctx, GRID);
+	}
+
 	function toggleGrid(e) {
         var p = getPos(e, canvas);
         var pgrid = getGrid(p);
@@ -102,6 +110,7 @@ $(document).ready(function () {
 
 	var dragging = false;
 	var state = undefined;
+	var running = false;
     $(canvas).mousedown(function (e) { 
     	dragging = true; 
     	switch (e.which) {
@@ -122,18 +131,22 @@ $(document).ready(function () {
 
     $(canvas).keydown(function (e) {
         if (e.keyCode == 65) {
-        	GRID = GRIDS[step % 2];
-        	updateGrid(GRIDS[(step+1) % 2], GRID);
-        	step++;
-        	GRID = GRIDS[step % 2];
-        	render(ctx, GRID);
+        	stepSimulation(ctx);
         }
         if (e.keyCode == 66) {
         	step++;
         	GRID = GRIDS[step % 2];
         	render(ctx, GRID);
         }
+        if (e.keyCode == 67) {
+        	running = !running;
+        }
     });
+
+    $(canvas).hover(function (e) {
+        iid = setInterval(function() { if (running) stepSimulation(ctx);}, 100) },
+        function() { (iid && clearInterval(iid)); }
+    );
 
 
     var input = document.getElementById("electronics_input");
