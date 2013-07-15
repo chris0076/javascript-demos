@@ -312,3 +312,214 @@ $(document).ready(function () {
         }
     });
 });
+
+
+
+$(document).ready(function () {
+    function BoundingBox(center, radius, value) {
+        this.center = new Vector(center); // vec
+        this.radius = new Vector(radius); // vec
+
+        this.minval = this.center.sub(this.radius);
+        this.maxval = this.center.add(this.radius);
+        this.start = this.center.copy();
+        this.value = value | 0;
+
+        this.update = function (coord) {
+            var val = new Vector(coord);
+            if (val.x() > this.start.x()) {
+                this.maxval.x(val.x());
+            } else {
+                this.minval.x(val.x());
+            }
+
+            if (val.y() > this.start.y()) {
+                this.maxval.y(val.y());
+            } else {
+                this.minval.y(val.y());
+            }
+            this.radius = this.maxval.sub(this.minval).div(2);
+            this.center = this.radius.add(this.minval);
+        };
+
+        this.contains = function (coord) {
+            return (this.minval.le(coord).all() && this.maxval.gt(coord).all());
+        };
+
+        this.intersects = function (box) {
+            if (this.minval.gt(box.maxval).any()) return false;
+            if (this.maxval.lt(box.minval).any()) return false;
+            return true;
+        };
+
+        this.render = function (ctx) {
+            ctx.save();
+            ctx.fillStyle = colors[this.value];
+            ctx.fillRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y())
+            ctx.strokeStyle = '#333333';
+            ctx.strokeRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y())
+            ctx.restore();
+        };
+    };
+
+    function Point(coord, value) {
+        // just a data storage
+        this.coord = coord;
+        this.value = value | BLANK;
+    }
+
+    function RegionQuadtree(bounds, parent) {
+        this.bounds = bounds;
+        this.parent = parent;
+        this.children = null;
+        this.bottom = (Math.max(bounds.radius.x(), bounds.radius.y()) <= 5) // hardcoded for now
+
+        this.addPoint = function (point) {
+            if (!this.bounds.contains(point.coord)) {
+                return false;
+            }
+            if (this.children === null) {
+                if (this.bounds.value === point.value) return true;
+                if (this.bottom) {
+                    this.bounds.value = point.value;
+                    this.merge(); // see if this matches all the other siblings
+                    return true;
+                }
+                if (!this.subdivide()) return false;
+            }
+            for (var i=0; i<this.children.length; i++) {
+                if (this.children[i].addPoint(point)) return true;
+            }
+            return false;
+        };
+
+        this.removeCoord = function (coord) {
+            if (!this.bounds.contains(coord)) {
+                return false;
+            }
+            if (this.children) {
+                for (var i=0; i<this.children.length; i++) {
+                    if (this.children[i].removeCoord(coord)) {
+                        return true;
+                    }
+                }
+            } else {
+                this.bounds.value = BLANK;
+                this.merge();
+            }
+            return true;
+        };
+
+        this._merge = function () {
+            if (!this.children) {
+                return true;
+            } 
+            var value = this.children[0].bounds.value;
+            for (var i=0; i<this.children.length; i++) {
+                var quad = this.children[i];
+                // children must be reduced
+                if (quad.children) return false; 
+                // all children must be the same value
+                if (value !== quad.bounds.value) return false;
+            }
+            this.bounds.value = value;
+            this.children = null;
+            return true;
+        }
+
+        this.merge = function () {
+            var parent = this.parent;
+            var good = true;
+            while (parent && good) {
+                good = parent._merge();
+                parent = parent.parent;
+            }
+        };
+
+        this.subdivide = function () {
+            if (!this.bottom) {
+                var half = (this.bounds.radius.div(2));
+                var ihalf = new Vector(half.x(), -half.y());
+                var nw = this.bounds.center.sub(half);
+                var ne = this.bounds.center.add(ihalf);
+                var sw = this.bounds.center.sub(ihalf);
+                var se = this.bounds.center.add(half);
+
+                this.children = [
+                    new RegionQuadtree(new BoundingBox(nw, half, this.bounds.value), this),
+                    new RegionQuadtree(new BoundingBox(ne, half, this.bounds.value), this),
+                    new RegionQuadtree(new BoundingBox(sw, half, this.bounds.value), this),
+                    new RegionQuadtree(new BoundingBox(se, half, this.bounds.value), this),
+                ]
+            }
+            return true;
+        };
+
+        this.query = function (box) {
+            var quads = [];
+            if (this.bounds.intersects(box)) {
+                if (this.children) {
+                    for (var i=0; i<this.children.length; i++) {
+                        var a = this.children[i].query(box);
+                        if (a.length) {
+                            quads.push.apply(quads, a);
+                        }
+                    }
+                } else {
+                    if (this.points.length) {
+                        quads.push(this);
+                    }
+                }
+            }
+            return quads;
+        };
+
+        this.render = function (ctx) {
+            if (this.children != null) {
+                for (var i=0; i<4; i++) {
+                    this.children[i].render(ctx);
+                }
+            } else {
+                this.bounds.render(ctx);
+            }
+        };
+    };
+
+
+    function toggleGrid(e) {
+        var p = getPos(e, canvas);
+        quad.addPoint(new Point(new Vector([p.x,p.y]), state));
+        quad.render(ctx);
+    }
+
+    var colors = ["#000000", "#FF8800"]
+    var canvas = document.getElementById("regionquadtree");
+    canvas.onselectstart = function () { return false; };
+    canvas.oncontextmenu = function () {return false; };
+    var ctx = canvas.getContext("2d");
+    writeString(canvas, "Click");
+
+    var center = new Vector([canvas.height/2, canvas.width/2]);
+    var radius = new Vector([canvas.height/2, canvas.width/2]);
+    var bb = new BoundingBox(center, radius, 0);
+    var quad = new RegionQuadtree(bb, null);
+
+    var dragging = false;
+    var state = undefined;
+    $(canvas).mousedown(function (e) { 
+        dragging = true; 
+        switch (e.which) {
+            case 1: state = 1; break;
+            case 3: state = 0; break;
+            default: console.log(e);
+        }
+        toggleGrid(e);
+    });
+    $(document).mouseup(function (e) { dragging = false; state = undefined; });
+
+    $(canvas).mousemove(function (e) {
+        if (dragging) {
+            toggleGrid(e);
+        }
+    });
+});
