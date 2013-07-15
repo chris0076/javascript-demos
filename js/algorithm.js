@@ -1,12 +1,12 @@
 $(document).ready(function () {
-    function BoundingBox(center, radius) {
+    function BoundingBox(center, radius, value) {
         this.center = new Vector(center); // vec
         this.radius = new Vector(radius); // vec
 
         this.minval = this.center.sub(this.radius);
         this.maxval = this.center.add(this.radius);
         this.start = this.center.copy();
-        this.style = "RGBA(0,0,0,0)";
+        this.value = value | 0;
 
         this.update = function (coord) {
             var val = new Vector(coord);
@@ -37,9 +37,10 @@ $(document).ready(function () {
 
         this.render = function (ctx) {
             ctx.save();
-            ctx.fillStyle = this.style;
+            ctx.fillStyle = colors[this.value];
             ctx.fillRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y())
-            ctx.strokeRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y());
+            ctx.strokeStyle = '#333333';
+            ctx.strokeRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y())
             ctx.restore();
         };
     };
@@ -219,7 +220,7 @@ $(document).ready(function () {
         };
     };
 
-
+    var colors = ["RGBA(0,0,0,255)", "RGBA(150,150,150,20)", "RGBA(0,0,0,0)"]
     var dragging = false;
     var selection = null;
     var startpos = null;
@@ -252,6 +253,7 @@ $(document).ready(function () {
         dragging = true;
         startpos = getPos(e, canvas);
         selection = new BoundingBox([startpos.x, startpos.y], [0, 0]);
+        selection.value = 2;
     });
 
     $(document).mousemove(function (e) {
@@ -263,11 +265,11 @@ $(document).ready(function () {
             selection.update([p.x, p.y]);
             var a = tree.query(selection);
             for (var i=0; i<a.length;i++) {
-                a[i].bounds.style = "RGBA(150,150,150,20)";
+                a[i].bounds.value = 1;
             }
             renderAll(ctx);
             for (var i=0; i<a.length;i++) {
-                a[i].bounds.style = "RGBA(0,0,0,0)";
+                a[i].bounds.value = 0;
             }
         }
     });
