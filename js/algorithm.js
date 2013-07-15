@@ -67,10 +67,8 @@ $(document).ready(function () {
         this.points = [];
         this.parent = parent;
         this.children = null;
-        var log2 = Math.log(2);
         var min = Math.min(this.bounds.radius.x(), this.bounds.radius.y());
-
-        this.depth = Math.floor(Math.log(min)/log2) + 1;
+        this.bottom = Math.floor(Math.log(min)/Math.log(2)) <= 0;
 
         this.addPoint = function (point) {
             if (!this.bounds.contains(point.coord)) {
@@ -83,7 +81,7 @@ $(document).ready(function () {
                     point.quad = this;
                     return true;
                 }
-                if ((this.depth - 1) <= 0) {
+                if (this.bottom) {
                     this.points.push(point);
                     point.quad = this;
                     return true;
@@ -167,7 +165,7 @@ $(document).ready(function () {
         };
 
         this.subdivide = function () {
-            if ((this.depth - 1) > 0) {
+            if (!this.bottom) {
                 var half = (this.bounds.radius.div(2));
                 var ihalf = new Vector(half.x(), -half.y());
                 var nw = this.bounds.center.sub(half);
