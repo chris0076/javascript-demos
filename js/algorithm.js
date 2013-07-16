@@ -365,7 +365,7 @@ $(document).ready(function () {
     function Point(coord, value) {
         // just a data storage
         this.coord = coord;
-        this.value = value | BLANK;
+        this.value = value | 0;
     }
 
     function RegionQuadtree(bounds, parent) {
@@ -404,7 +404,7 @@ $(document).ready(function () {
                     }
                 }
             } else {
-                this.bounds.value = BLANK;
+                this.bounds.value = 0;
                 this.merge();
             }
             return true;
