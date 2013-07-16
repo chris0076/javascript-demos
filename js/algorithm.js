@@ -1,49 +1,55 @@
+function _BoundingBox(center, radius, value, colors) {
+    this.center = new Vector(center); // vec
+    this.radius = new Vector(radius); // vec
+
+    this.minval = this.center.sub(this.radius);
+    this.maxval = this.center.add(this.radius);
+    this.start = this.center.copy();
+    this.value = value | 0;
+    this.colors = colors;
+
+    this.update = function (coord) {
+        var val = new Vector(coord);
+        if (val.x() > this.start.x()) {
+            this.maxval.x(val.x());
+        } else {
+            this.minval.x(val.x());
+        }
+
+        if (val.y() > this.start.y()) {
+            this.maxval.y(val.y());
+        } else {
+            this.minval.y(val.y());
+        }
+        this.radius = this.maxval.sub(this.minval).div(2);
+        this.center = this.radius.add(this.minval);
+    };
+
+    this.contains = function (coord) {
+        return (this.minval.le(coord).all() && this.maxval.gt(coord).all());
+    };
+
+    this.intersects = function (box) {
+        if (this.minval.gt(box.maxval).any()) return false;
+        if (this.maxval.lt(box.minval).any()) return false;
+        return true;
+    };
+
+    this.render = function (ctx) {
+        ctx.save();
+        ctx.fillStyle = this.colors[this.value];
+        ctx.fillRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y())
+        ctx.strokeStyle = '#333333';
+        ctx.strokeRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y())
+        ctx.restore();
+    };
+};
+
 $(document).ready(function () {
     function BoundingBox(center, radius, value) {
-        this.center = new Vector(center); // vec
-        this.radius = new Vector(radius); // vec
-
-        this.minval = this.center.sub(this.radius);
-        this.maxval = this.center.add(this.radius);
-        this.start = this.center.copy();
-        this.value = value | 0;
-
-        this.update = function (coord) {
-            var val = new Vector(coord);
-            if (val.x() > this.start.x()) {
-                this.maxval.x(val.x());
-            } else {
-                this.minval.x(val.x());
-            }
-
-            if (val.y() > this.start.y()) {
-                this.maxval.y(val.y());
-            } else {
-                this.minval.y(val.y());
-            }
-            this.radius = this.maxval.sub(this.minval).div(2);
-            this.center = this.radius.add(this.minval);
-        };
-
-        this.contains = function (coord) {
-            return (this.minval.le(coord).all() && this.maxval.gt(coord).all());
-        };
-
-        this.intersects = function (box) {
-            if (this.minval.gt(box.maxval).any()) return false;
-            if (this.maxval.lt(box.minval).any()) return false;
-            return true;
-        };
-
-        this.render = function (ctx) {
-            ctx.save();
-            ctx.fillStyle = colors[this.value];
-            ctx.fillRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y())
-            ctx.strokeStyle = '#333333';
-            ctx.strokeRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y())
-            ctx.restore();
-        };
-    };
+        // This is to use the local color variable
+        return new _BoundingBox(center, radius, value, colors);
+    }
 
     function Point(coord) {
         this.coord = new Vector(coord);
@@ -317,50 +323,9 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     function BoundingBox(center, radius, value) {
-        this.center = new Vector(center); // vec
-        this.radius = new Vector(radius); // vec
-
-        this.minval = this.center.sub(this.radius);
-        this.maxval = this.center.add(this.radius);
-        this.start = this.center.copy();
-        this.value = value | 0;
-
-        this.update = function (coord) {
-            var val = new Vector(coord);
-            if (val.x() > this.start.x()) {
-                this.maxval.x(val.x());
-            } else {
-                this.minval.x(val.x());
-            }
-
-            if (val.y() > this.start.y()) {
-                this.maxval.y(val.y());
-            } else {
-                this.minval.y(val.y());
-            }
-            this.radius = this.maxval.sub(this.minval).div(2);
-            this.center = this.radius.add(this.minval);
-        };
-
-        this.contains = function (coord) {
-            return (this.minval.le(coord).all() && this.maxval.gt(coord).all());
-        };
-
-        this.intersects = function (box) {
-            if (this.minval.gt(box.maxval).any()) return false;
-            if (this.maxval.lt(box.minval).any()) return false;
-            return true;
-        };
-
-        this.render = function (ctx) {
-            ctx.save();
-            ctx.fillStyle = colors[this.value];
-            ctx.fillRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y())
-            ctx.strokeStyle = '#333333';
-            ctx.strokeRect(this.minval.x(), this.minval.y(), this.radius.mul(2).x(), this.radius.mul(2).y())
-            ctx.restore();
-        };
-    };
+        // This is to use the local color variable
+        return new _BoundingBox(center, radius, value, colors);
+    }
 
     function Point(coord, value) {
         // just a data storage
